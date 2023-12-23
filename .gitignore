@@ -1,0 +1,7 @@
+# Directories
+bin/
+obj/
+
+# Files
+*.user
+Makefile
