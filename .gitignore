@@ -1,7 +1,14 @@
 # Directories
 bin/
 obj/
+compile_commands/
+.cache/
 
 # Files
 *.user
 Makefile
+compile_commands.json
+ecc.sh
+.ignore
+app
+.clang-format
