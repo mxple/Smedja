@@ -1,18 +1,22 @@
 #pragma once
 
-#include "Core.h"
+#include "Window.h"
 
 namespace Smedja {
 
-	class Application {
-	public:
-		Application();
-		virtual ~Application();
+class Application {
+   public:
+    Application();
+    virtual ~Application();
 
-		void run();
-	};
+    void run();
 
-	// To be defined in client
-	Application* createApplication();
+   private:
+    std::unique_ptr<Window> m_Window;
+    bool m_Running = true;
+};
 
-}
+// To be defined in client
+Application* createApplication();
+
+}  // namespace Smedja

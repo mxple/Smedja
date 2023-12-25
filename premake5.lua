@@ -9,6 +9,12 @@ workspace "Smedja"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+IncludeDir = {}
+IncludeDir["GLFW"] = "Smedja/vendor/GLFW/include"
+
+include "Smedja/vendor/GLFW"	-- include premake file
+
+
 project "Smedja"
 	location "Smedja"
 	kind "SharedLib"
@@ -17,6 +23,19 @@ project "Smedja"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("obj/" .. outputdir .. "/%{prj.name}")
 
+	links {
+		"GLFW",
+		"X11",
+		"Xrandr",
+		"Xi",
+		"Xinerama",
+		"Xxf86vm",
+		"Xcursor",
+		"Xrender",
+		"GL",
+	}
+
+	pchheader "pch.h"
 
 	files {
 		"%{prj.name}/src/**.h",
@@ -25,6 +44,8 @@ project "Smedja"
 
 	includedirs {
 		"%{prj.name}/vendor/spdlog/include",
+		"%{prj.name}/src",
+		"%{IncludeDir.GLFW}"
 	}
 
 	filter "configurations:Debug"
@@ -44,6 +65,15 @@ project "Sandbox"
 	objdir ("obj/" .. outputdir .. "/%{prj.name}")
 
 	links {
+		"GLFW",
+		"X11",
+		"Xrandr",
+		"Xi",
+		"Xinerama",
+		"Xxf86vm",
+		"Xcursor",
+		"Xrender",
+		"GL",
 		"Smedja"
 	}
 
@@ -54,7 +84,8 @@ project "Sandbox"
 
 	includedirs {
 		"Smedja/vendor/spdlog/include",
-		"Smedja/src"
+		"Smedja/src",
+		"%{IncludeDir.GLFW}"
 	}
 
 	filter "configurations:Debug"
