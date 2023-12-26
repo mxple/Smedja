@@ -16,4 +16,4 @@ void Log::init() {
     s_ClientLogger->set_level(spdlog::level::trace);
 }
 
-}  // namespace Smedja
+} // namespace Smedja

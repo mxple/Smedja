@@ -21,8 +21,8 @@ public:
     KeyPressedEvent(int keyCode) : KeyEvent(keyCode) {}
 
     EVENT_CLASS_TYPE(KeyPressed)
-    
-    virtual std::string toString() const override {
+
+    std::string toString() const override {
         return "KeyPressedEvent: " + std::to_string(m_keyCode); // TODO: enum
     }
 };
@@ -33,7 +33,7 @@ public:
 
     EVENT_CLASS_TYPE(KeyReleased)
 
-    virtual std::string toString() const override {
+    std::string toString() const override {
         return "KeyReleasedEvent: " + std::to_string(m_keyCode); // TODO: enum
     }
 };

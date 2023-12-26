@@ -18,7 +18,7 @@ public:
     virtual EventType getEventType() const override {
         return EventType::MouseMoved;
     }
-    virtual std::string toString() const override {
+    std::string toString() const override {
         return "MouseMovedEvent: " + std::to_string(m_mouseX) + ", " +
                std::to_string(m_mouseY);
     }
@@ -35,9 +35,9 @@ public:
         return m_button;
     }
 
-	EVENT_CLASS_TYPE(MouseButtonPressed)
+    EVENT_CLASS_TYPE(MouseButtonPressed)
 
-    virtual std::string toString() const override {
+    std::string toString() const override {
         return "MouseButtonPressedEvent: " + std::to_string(m_button); // TODO
     }
 
@@ -53,9 +53,9 @@ public:
         return m_button;
     }
 
-	EVENT_CLASS_TYPE(MouseButtonReleased)
+    EVENT_CLASS_TYPE(MouseButtonReleased)
 
-    virtual std::string toString() const override {
+    std::string toString() const override {
         return "MouseButtonReleasedEvent: " + std::to_string(m_button); // TODO
     }
 
@@ -75,9 +75,9 @@ public:
         return m_yOffset;
     }
 
-	EVENT_CLASS_TYPE(MouseScrolled)
+    EVENT_CLASS_TYPE(MouseScrolled)
 
-    virtual std::string toString() const override {
+    std::string toString() const override {
         return "MouseScrolledEvent: (" + std::to_string(m_xOffset) + ", " +
                std::to_string(m_yOffset) + ")";
     }

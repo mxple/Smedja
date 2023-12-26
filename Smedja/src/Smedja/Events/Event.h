@@ -33,7 +33,7 @@ public:
     virtual ~Event() = default;
 
     virtual EventType getEventType() const = 0;
-    virtual std::string toString() const = 0; // Used for logging
+    virtual std::string toString() const = 0;
 
     inline bool isHandled() const {
         return m_handled;

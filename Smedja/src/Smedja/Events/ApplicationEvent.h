@@ -10,7 +10,7 @@ public:
 
     EVENT_CLASS_TYPE(WindowClose)
 
-    virtual std::string toString() const override {
+    std::string toString() const override {
         return "WindowCloseEvent";
     }
 };
@@ -29,7 +29,7 @@ public:
         return m_height;
     }
 
-    virtual std::string toString() const override {
+    std::string toString() const override {
         return "WindowResizeEvent: " + std::to_string(m_width) + ", " +
                std::to_string(m_height);
     }
