@@ -15,9 +15,8 @@ public:
         return m_mouseY;
     }
 
-    virtual EventType getEventType() const override {
-        return EventType::MouseMoved;
-    }
+    EVENT_CLASS_TYPE(MouseButtonPressed)
+
     std::string toString() const override {
         return "MouseMovedEvent: " + std::to_string(m_mouseX) + ", " +
                std::to_string(m_mouseY);
