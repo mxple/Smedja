@@ -14,6 +14,8 @@ protected:
     KeyEvent(int keyCode) : m_keyCode(keyCode) {}
 
     int m_keyCode; // TODO: Make this an enum
+    
+    // idk if these will stay
 };
 
 class KeyPressedEvent : public KeyEvent {

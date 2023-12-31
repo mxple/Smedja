@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 
 #include "Smedja/Events/Event.h"
+#include "Smedja/Input.h"
 #include "pch.h"
 
 namespace Smedja {
@@ -50,13 +51,16 @@ public:
         return m_focused;
     }
 
+    inline void *getGLFWWindow() const {
+        return m_window;
+    }
     // static Window* create(const WindowProps& props = WindowProps());
 
 private:
     void init(const WindowProps &props);
     void shutdown();
 
-    GLFWwindow *m_Window;
+    GLFWwindow *m_window;
 
     struct WindowData {
         std::string title;

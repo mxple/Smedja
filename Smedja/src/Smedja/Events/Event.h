@@ -4,6 +4,8 @@
 
 namespace Smedja {
 
+#define SD_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
+
 enum class EventType {
     Empty = 0,
 
@@ -19,7 +21,9 @@ enum class EventType {
     MouseScrolled,
 
     KeyPressed,
-    KeyReleased
+    KeyReleased,
+
+    CharTyped
 };
 
 #define EVENT_CLASS_TYPE(type)                                                 \
@@ -68,6 +72,37 @@ private:
 // Format for logging
 inline std::ostream &operator<<(std::ostream &os, const Event &e) {
     return os << e.toString();
+}
+
+inline std::ostream &operator<<(std::ostream &os, const EventType &eventType) {
+    switch (eventType) {
+    case EventType::Empty:
+        return os << "Empty";
+    case EventType::WindowClose:
+        return os << "WindowClose";
+    case EventType::WindowResize:
+        return os << "WindowResize";
+    case EventType::WindowFocus:
+        return os << "WindowFocus";
+    case EventType::WindowLostFocus:
+        return os << "WindowLostFocus";
+    case EventType::WindowMoved:
+        return os << "WindowMoved";
+    case EventType::MouseButtonPressed:
+        return os << "MouseButtonPressed";
+    case EventType::MouseButtonReleased:
+        return os << "MouseButtonReleased";
+    case EventType::MouseMoved:
+        return os << "MouseMoved";
+    case EventType::MouseScrolled:
+        return os << "MouseScrolled";
+    case EventType::KeyPressed:
+        return os << "KeyPressed";
+    case EventType::KeyReleased:
+        return os << "KeyReleased";
+    default:
+        return os << "Unknown";
+    }
 }
 
 } // namespace Smedja

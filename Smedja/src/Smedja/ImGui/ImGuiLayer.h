@@ -1,7 +1,13 @@
 #pragma once
 
+#include "Smedja/Events/CharTypedEvent.h"
 #include "Smedja/Layer.h"
+#include "Smedja/Events/ApplicationEvent.h"
+#include "Smedja/Events/KeyEvent.h"
+#include "Smedja/Events/MouseEvent.h"
 #include "Smedja/Events/Event.h"
+
+#include "imgui.h"
 
 namespace Smedja {
 
@@ -17,7 +23,18 @@ public:
     virtual void onEvent(Event& e);
 
 private:
+    bool onMouseButtonPressedEvent(MouseButtonPressedEvent& e);
+    bool onMouseButtonReleasedEvent(MouseButtonReleasedEvent& e);
+    bool onMouseMovedEvent(MouseMovedEvent& e);
+    bool onMouseScrolledEvent(MouseScrolledEvent& e);
+    bool onKeyPressedEvent(KeyPressedEvent& e);
+    bool onKeyReleasedEvent(KeyReleasedEvent& e);
+    bool onCharTypedEvent(CharTypedEvent& e);
+    bool onWindowResizeEvent(WindowResizeEvent& e);
+    bool onWindowFocusEvent(WindowFocusEvent& e);
+    bool onWindowLostFocusEvent(WindowLostFocusEvent &e);
 
+    static ImGuiKey convertGLFWKeyCodeToImGuiKeyCode(int keycode);
 };
 
 }

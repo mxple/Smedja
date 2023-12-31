@@ -1,5 +1,7 @@
 #include <glad/glad.h>
 
+#include "Smedja/Events/CharTypedEvent.h"
+#include "Smedja/Input.h"
 #include "Window.h" // must be included after glad
 
 #include "Application.h"
@@ -44,24 +46,24 @@ void Window::init(const WindowProps &props) {
         s_GLFWInitialized = true;
     }
 
-    m_Window = glfwCreateWindow((int)props.width, (int)props.height,
+    m_window = glfwCreateWindow((int)props.width, (int)props.height,
                                 m_Data.title.c_str(), nullptr, nullptr);
 
-    if (m_Window == nullptr) {
+    if (m_window == nullptr) {
         SD_CORE_ERROR("Failed to create GLFW window!");
         glfwTerminate();
         return;
     }
 
-    glfwMakeContextCurrent(m_Window);
+    glfwMakeContextCurrent(m_window);
     int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
     CORE_ASSERT(status, "Failed to initialize glad!");
-    glfwSetWindowUserPointer(m_Window, &m_Data);
+    glfwSetWindowUserPointer(m_window, &m_Data);
     setVSync(true);
 
     // Set GLFW callbacks
     glfwSetWindowSizeCallback(
-        m_Window, [](GLFWwindow *window, int width, int height) {
+        m_window, [](GLFWwindow *window, int width, int height) {
             // Update window data
             WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
             data.width = width;
@@ -71,14 +73,14 @@ void Window::init(const WindowProps &props) {
             data.eventCallback(e);
         });
 
-    glfwSetWindowCloseCallback(m_Window, [](GLFWwindow *window) {
+    glfwSetWindowCloseCallback(m_window, [](GLFWwindow *window) {
             WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
 
             WindowCloseEvent e;
             data.eventCallback(e);
         });
 
-    glfwSetWindowFocusCallback(m_Window, [](GLFWwindow *window, int focused) {
+    glfwSetWindowFocusCallback(m_window, [](GLFWwindow *window, int focused) {
             WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
             if (focused) {
                 WindowFocusEvent e;
@@ -90,7 +92,7 @@ void Window::init(const WindowProps &props) {
             }
         });
 
-    glfwSetKeyCallback(m_Window, [](GLFWwindow *window, int key, int scancode,
+    glfwSetKeyCallback(m_window, [](GLFWwindow *window, int key, int scancode,
                                     int action, int mods) {
             WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
 
@@ -104,7 +106,7 @@ void Window::init(const WindowProps &props) {
         });
 
     glfwSetCursorPosCallback(
-        m_Window, [](GLFWwindow *window, double xpos, double ypos) {
+        m_window, [](GLFWwindow *window, double xpos, double ypos) {
             WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
 
             MouseMovedEvent e(xpos, ypos);
@@ -112,8 +114,10 @@ void Window::init(const WindowProps &props) {
         });
 
     glfwSetMouseButtonCallback(
-        m_Window, [](GLFWwindow *window, int button, int action, int mods) {
+        m_window, [](GLFWwindow *window, int button, int action, int mods) {
             WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+
+            SD_CORE_INFO("mouse pressed! {0}", button);
 
             if (action == GLFW_PRESS) {
                 MouseButtonPressedEvent e(button);
@@ -125,22 +129,32 @@ void Window::init(const WindowProps &props) {
         });
 
     glfwSetScrollCallback(
-        m_Window, [](GLFWwindow *window, double xoffset, double yoffset) {
+        m_window, [](GLFWwindow *window, double xoffset, double yoffset) {
             WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
 
             MouseScrolledEvent e(xoffset, yoffset);
             data.eventCallback(e);
         });
+
+    glfwSetCharCallback(m_window, [](GLFWwindow *window, unsigned int codept) {
+            WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+
+            CharTypedEvent e(codept);
+            data.eventCallback(e);
+        });
+
+    // Set up window polling / input
+    Input::s_window = m_window;
 }
 
 // Shutdown does not call GLFW terminate as it may be used by other windows
 void Window::shutdown() {
-    glfwDestroyWindow(m_Window);
+    glfwDestroyWindow(m_window);
 }
 
 void Window::onUpdate() {
     glfwPollEvents();
-    glfwSwapBuffers(m_Window);
+    glfwSwapBuffers(m_window);
 }
 
 void Window::setVSync(bool enabled) {

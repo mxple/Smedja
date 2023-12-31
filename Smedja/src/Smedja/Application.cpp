@@ -2,11 +2,10 @@
 
 #include <glad/glad.h>
 
+#include "Smedja/Input.h"
 #include "pch.h"
 
 namespace Smedja {
-
-#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
 Application *Application::s_instance = nullptr;
 
@@ -14,7 +13,7 @@ Application::Application() {
     CORE_ASSERT(!s_instance, "Application already exists!");
     s_instance = this;
     m_Window = std::unique_ptr<Window>(new Window());
-    m_Window->setEventCallback(BIND_EVENT_FN(onEvent));
+    m_Window->setEventCallback(SD_BIND_EVENT_FN(Application::onEvent));
 }
 
 Application::~Application() {}
@@ -52,9 +51,12 @@ void Application::popOverlay(Layer *overlay) {
 
 void Application::onEvent(Event &e) {
     EventDispatcher dispatcher(e);
-    dispatcher.dispatch<WindowCloseEvent>(BIND_EVENT_FN(onWindowClose));
-    dispatcher.dispatch<WindowFocusEvent>(BIND_EVENT_FN(onWindowFocus));
-    dispatcher.dispatch<WindowLostFocusEvent>(BIND_EVENT_FN(onWindowLostFocus));
+    dispatcher.dispatch<WindowCloseEvent>(
+        SD_BIND_EVENT_FN(Application::onWindowClose));
+    dispatcher.dispatch<WindowFocusEvent>(
+        SD_BIND_EVENT_FN(Application::onWindowFocus));
+    dispatcher.dispatch<WindowLostFocusEvent>(
+        SD_BIND_EVENT_FN(Application::onWindowLostFocus));
 
     for (auto it = m_layerStack.end(); it != m_layerStack.begin();) {
         (*--it)->onEvent(e);
@@ -66,6 +68,7 @@ void Application::onEvent(Event &e) {
     }
 }
 
+// Event functions
 bool Application::onWindowClose(WindowCloseEvent &e) {
     m_Running = false;
     return true;
