@@ -12,3 +12,4 @@ ecc.sh
 .ignore
 app
 .clang-format
+imgui.ini
