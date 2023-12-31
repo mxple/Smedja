@@ -57,6 +57,7 @@ public:
             m_event.m_handled = func(*(E *)&m_event);
             return true;
         }
+        // SD_WARN("EventDispatcher: Event type mismatch");
         return false;
     }
 

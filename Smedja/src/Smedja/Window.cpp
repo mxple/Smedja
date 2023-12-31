@@ -1,10 +1,11 @@
-#include "Window.h"
+#include <glad/glad.h>
+
+#include "Window.h" // must be included after glad
+
 #include "Application.h"
-#include "GLFW/glfw3.h"
 #include "Smedja/Events/ApplicationEvent.h"
 #include "Smedja/Events/KeyEvent.h"
 #include "Smedja/Events/MouseEvent.h"
-#include "pch.h"
 
 namespace Smedja {
 
@@ -53,6 +54,8 @@ void Window::init(const WindowProps &props) {
     }
 
     glfwMakeContextCurrent(m_Window);
+    int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+    CORE_ASSERT(status, "Failed to initialize glad!");
     glfwSetWindowUserPointer(m_Window, &m_Data);
     setVSync(true);
 
@@ -73,6 +76,18 @@ void Window::init(const WindowProps &props) {
 
             WindowCloseEvent e;
             data.eventCallback(e);
+        });
+
+    glfwSetWindowFocusCallback(m_Window, [](GLFWwindow *window, int focused) {
+            WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+            if (focused) {
+                WindowFocusEvent e;
+                data.eventCallback(e);
+            }
+            else {
+                WindowLostFocusEvent e;
+                data.eventCallback(e);
+            }
         });
 
     glfwSetKeyCallback(m_Window, [](GLFWwindow *window, int key, int scancode,

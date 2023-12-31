@@ -4,3 +4,6 @@
 [submodule "Smedja/vendor/GLFW"]
 	path = Smedja/vendor/GLFW
 	url = https://github.com/TheCherno/glfw
+[submodule "Smedja/vendor/ImGui"]
+	path = Smedja/vendor/ImGui
+	url = https://github.com/ocornut/imgui

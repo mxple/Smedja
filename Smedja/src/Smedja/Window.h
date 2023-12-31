@@ -42,6 +42,14 @@ public:
     void setVSync(bool enabled);
     bool isVSync() const;
 
+    void setFocus(bool focus) {
+        m_focused = focus;
+    }
+
+    bool getFocus() const {
+        return m_focused;
+    }
+
     // static Window* create(const WindowProps& props = WindowProps());
 
 private:
@@ -60,6 +68,7 @@ private:
     };
 
     WindowData m_Data;
+    bool m_focused = true;
 };
 
 } // namespace Smedja

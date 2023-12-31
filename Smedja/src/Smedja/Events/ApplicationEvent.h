@@ -38,7 +38,27 @@ private:
     unsigned int m_width, m_height;
 };
 
-// class WindowFocusEvent : public Event {};
-// class WindowLostFocusEvent : public Event {};
+class WindowFocusEvent : public Event {
+public:
+    WindowFocusEvent() {}
+
+    EVENT_CLASS_TYPE(WindowFocus)
+
+    std::string toString() const override {
+        return "WindowFocusEvent";
+    }
+};
+
+class WindowLostFocusEvent : public Event {
+public:
+    WindowLostFocusEvent() {}
+
+    EVENT_CLASS_TYPE(WindowLostFocus)
+
+    std::string toString() const override {
+        return "WindowLostFocusEvent";
+    }
+};
+
 // class WindowMovedEvent : public Event {};
 } // namespace Smedja

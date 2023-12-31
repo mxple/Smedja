@@ -1,8 +1,7 @@
 workspace "Smedja"
 	architecture "x64"
 
-	configurations
-	{
+	configurations {
 		"Debug",
 		"Release"
 	}
@@ -11,9 +10,12 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
 IncludeDir["GLFW"] = "Smedja/vendor/GLFW/include"
+IncludeDir["glad"] = "Smedja/vendor/glad/include"
+IncludeDir["ImGui"] = "Smedja/vendor/ImGui"
 
 include "Smedja/vendor/GLFW"	-- include premake file
-
+include "Smedja/vendor/glad"	-- include premake file
+include "Smedja/vendor/ImGui"	-- include premake file
 
 project "Smedja"
 	location "Smedja"
@@ -25,6 +27,8 @@ project "Smedja"
 
 	links {
 		"GLFW",
+		"glad",
+		"ImGui",
 		"X11",
 		"Xrandr",
 		"Xi",
@@ -45,7 +49,13 @@ project "Smedja"
 	includedirs {
 		"%{prj.name}/vendor/spdlog/include",
 		"%{prj.name}/src",
-		"%{IncludeDir.GLFW}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.glad}",
+		"%{IncludeDir.ImGui}",
+	}
+
+	defines {
+		"GLFW_INCLUDE_NONE"
 	}
 
 	filter "configurations:Debug"
@@ -66,6 +76,8 @@ project "Sandbox"
 
 	links {
 		"GLFW",
+		"glad",
+		"ImGui",
 		"X11",
 		"Xrandr",
 		"Xi",
@@ -83,9 +95,11 @@ project "Sandbox"
 	}
 
 	includedirs {
-		"Smedja/vendor/spdlog/include",
 		"Smedja/src",
-		"%{IncludeDir.GLFW}"
+		"Smedja/vendor/spdlog/include",
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.glad}",
+		"%{IncludeDir.ImGui}",
 	}
 
 	filter "configurations:Debug"
