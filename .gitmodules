@@ -3,7 +3,7 @@
 	url = https://github.com/gabime/spdlog
 [submodule "Smedja/vendor/ImGui"]
 	path = Smedja/vendor/ImGui
-	url = https://github.com/ocornut/imgui
+	url = https://github.com/Mxple/imgui
 [submodule "Smedja/vendor/glfw"]
 	path = Smedja/vendor/glfw
 	url = https://github.com/Mxple/glfw
