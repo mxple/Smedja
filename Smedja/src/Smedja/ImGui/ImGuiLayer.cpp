@@ -1,6 +1,7 @@
 #include "ImGuiLayer.h"
 #include "Smedja/Application.h"
 
+#include "Smedja/KeyCodes.h"
 #include "backends/imgui_impl_opengl3.h"
 
 namespace Smedja {
@@ -19,6 +20,15 @@ void ImGuiLayer::onAttach() {
     ImGui_ImplOpenGL3_Init();
     // Set ImGui Style
     ImGui::StyleColorsDark();
+
+    // Set up clipboard
+    io.SetClipboardTextFn = [](void *userData, const char *text) {
+        glfwSetClipboardString((GLFWwindow *)userData, text);
+    };
+
+    io.GetClipboardTextFn = [](void *userData) {
+        return glfwGetClipboardString((GLFWwindow *)userData);
+    };
 }
 
 void ImGuiLayer::onDetach() {
