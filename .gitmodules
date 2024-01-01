@@ -1,6 +1,6 @@
 [submodule "Smedja/vendor/spdlog"]
 	path = Smedja/vendor/spdlog
-	url = https://github.com/gabime/spdlog
+	url = https://github.com/Mxple/spdlog
 [submodule "Smedja/vendor/ImGui"]
 	path = Smedja/vendor/ImGui
 	url = https://github.com/Mxple/imgui
