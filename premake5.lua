@@ -9,11 +9,11 @@ workspace "Smedja"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
-IncludeDir["GLFW"] = "Smedja/vendor/GLFW/include"
+IncludeDir["glfw"] = "Smedja/vendor/glfw/include"
 IncludeDir["glad"] = "Smedja/vendor/glad/include"
 IncludeDir["ImGui"] = "Smedja/vendor/ImGui"
 
-include "Smedja/vendor/GLFW"	-- include premake file
+include "Smedja/vendor/glfw"	-- include premake file
 include "Smedja/vendor/glad"	-- include premake file
 include "Smedja/vendor/ImGui"	-- include premake file
 
@@ -26,7 +26,7 @@ project "Smedja"
 	objdir ("obj/" .. outputdir .. "/%{prj.name}")
 
 	links {
-		"GLFW",
+		"glfw",
 		"glad",
 		"ImGui",
 		"X11",
@@ -49,7 +49,7 @@ project "Smedja"
 	includedirs {
 		"%{prj.name}/vendor/spdlog/include",
 		"%{prj.name}/src",
-		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.glfw}",
 		"%{IncludeDir.glad}",
 		"%{IncludeDir.ImGui}",
 	}
@@ -75,7 +75,7 @@ project "Sandbox"
 	objdir ("obj/" .. outputdir .. "/%{prj.name}")
 
 	links {
-		"GLFW",
+		"glfw",
 		"glad",
 		"ImGui",
 		"X11",
@@ -97,7 +97,7 @@ project "Sandbox"
 	includedirs {
 		"Smedja/src",
 		"Smedja/vendor/spdlog/include",
-		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.glfw}",
 		"%{IncludeDir.glad}",
 		"%{IncludeDir.ImGui}",
 	}

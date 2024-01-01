@@ -1,9 +1,9 @@
 [submodule "Smedja/vendor/spdlog"]
 	path = Smedja/vendor/spdlog
 	url = https://github.com/gabime/spdlog
-[submodule "Smedja/vendor/GLFW"]
-	path = Smedja/vendor/GLFW
-	url = https://github.com/TheCherno/glfw
 [submodule "Smedja/vendor/ImGui"]
 	path = Smedja/vendor/ImGui
 	url = https://github.com/ocornut/imgui
+[submodule "Smedja/vendor/glfw"]
+	path = Smedja/vendor/glfw
+	url = https://github.com/Mxple/glfw
