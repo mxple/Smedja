@@ -12,6 +12,8 @@ IncludeDir = {}
 IncludeDir["glfw"] = "Smedja/vendor/glfw/include"
 IncludeDir["glad"] = "Smedja/vendor/glad/include"
 IncludeDir["ImGui"] = "Smedja/vendor/ImGui"
+IncludeDir["glm"] = "Smedja/vendor/glm/glm"
+IncludeDir["spdlog"] = "Smedja/vendor/spdlog/include"
 
 include "Smedja/vendor/glfw"	-- include premake file
 include "Smedja/vendor/glad"	-- include premake file
@@ -43,15 +45,18 @@ project "Smedja"
 
 	files {
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		-- "%{prj.name}/vendor/glm/glm/**.hpp",
+		-- "%{prj.name}/vendor/glm/glm/**.inl"
 	}
 
 	includedirs {
-		"%{prj.name}/vendor/spdlog/include",
 		"%{prj.name}/src",
+		"%{IncludeDir.spdlog}",
 		"%{IncludeDir.glfw}",
 		"%{IncludeDir.glad}",
 		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.glm}",
 	}
 
 	defines {
@@ -60,10 +65,12 @@ project "Smedja"
 
 	filter "configurations:Debug"
 		defines "DEBUG"
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "RELEASE"
+		runtime "Release"
 		optimize "On"
 
 project "Sandbox"
@@ -96,16 +103,19 @@ project "Sandbox"
 
 	includedirs {
 		"Smedja/src",
-		"Smedja/vendor/spdlog/include",
+		"%{IncludeDir.spdlog}",
 		"%{IncludeDir.glfw}",
 		"%{IncludeDir.glad}",
 		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.glm}",
 	}
 
 	filter "configurations:Debug"
 		defines "DEBUG"
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "RELEASE"
+		runtime "Release"
 		optimize "On"
