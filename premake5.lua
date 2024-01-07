@@ -21,8 +21,9 @@ include "Smedja/vendor/ImGui"	-- include premake file
 
 project "Smedja"
 	location "Smedja"
-	kind "SharedLib"
+	kind "sharedlib"
 	language "C++"
+	cppdialect "C++17"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("obj/" .. outputdir .. "/%{prj.name}")
@@ -31,6 +32,7 @@ project "Smedja"
 		"glfw",
 		"glad",
 		"ImGui",
+		"GL",
 		"X11",
 		"Xrandr",
 		"Xi",
@@ -38,7 +40,6 @@ project "Smedja"
 		"Xxf86vm",
 		"Xcursor",
 		"Xrender",
-		"GL",
 	}
 
 	pchheader "pch.h"
@@ -46,8 +47,6 @@ project "Smedja"
 	files {
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
-		-- "%{prj.name}/vendor/glm/glm/**.hpp",
-		-- "%{prj.name}/vendor/glm/glm/**.inl"
 	}
 
 	includedirs {
@@ -64,35 +63,26 @@ project "Smedja"
 	}
 
 	filter "configurations:Debug"
+		-- warnings "Extra"
 		defines "DEBUG"
 		runtime "Debug"
-		symbols "On"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "RELEASE"
 		runtime "Release"
-		optimize "On"
+		optimize "on"
 
 project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
+	cppdialect "C++17"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("obj/" .. outputdir .. "/%{prj.name}")
 
 	links {
-		"glfw",
-		"glad",
-		"ImGui",
-		"X11",
-		"Xrandr",
-		"Xi",
-		"Xinerama",
-		"Xxf86vm",
-		"Xcursor",
-		"Xrender",
-		"GL",
 		"Smedja"
 	}
 
@@ -111,11 +101,12 @@ project "Sandbox"
 	}
 
 	filter "configurations:Debug"
+		-- warnings "Extra"
 		defines "DEBUG"
 		runtime "Debug"
-		symbols "On"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "RELEASE"
 		runtime "Release"
-		optimize "On"
+		optimize "on"

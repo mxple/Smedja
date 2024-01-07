@@ -37,7 +37,7 @@ void Window::init(const WindowProps &props) {
 
     if (!s_GLFWInitialized) {
         int success = glfwInit();
-        CORE_ASSERT(success, "Could not initialize GLFW!");
+        SD_CORE_ASSERT(success, "Could not initialize GLFW!");
 
         // Set GLFW error callback which will report GLFW errors using spdlog
         glfwSetErrorCallback([](int error, const char *description) {
@@ -55,13 +55,19 @@ void Window::init(const WindowProps &props) {
         return;
     }
 
-    glfwMakeContextCurrent(m_window);
-    int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-    CORE_ASSERT(status, "Failed to initialize glad!");
+    m_graphicsContext = new GLContext(m_window);
+    m_graphicsContext->init();
+
     glfwSetWindowUserPointer(m_window, &m_Data);
     setVSync(true);
 
     // Set GLFW callbacks
+    // Maybe use platform agnostic abstract function
+    glfwSetFramebufferSizeCallback(
+        m_window, [](GLFWwindow *window, int width, int height) {
+            glViewport(0, 0, width, height);
+        });
+
     glfwSetWindowSizeCallback(
         m_window, [](GLFWwindow *window, int width, int height) {
             // Update window data
@@ -74,36 +80,35 @@ void Window::init(const WindowProps &props) {
         });
 
     glfwSetWindowCloseCallback(m_window, [](GLFWwindow *window) {
-            WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+        WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
 
-            WindowCloseEvent e;
-            data.eventCallback(e);
-        });
+        WindowCloseEvent e;
+        data.eventCallback(e);
+    });
 
     glfwSetWindowFocusCallback(m_window, [](GLFWwindow *window, int focused) {
-            WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
-            if (focused) {
-                WindowFocusEvent e;
-                data.eventCallback(e);
-            }
-            else {
-                WindowLostFocusEvent e;
-                data.eventCallback(e);
-            }
-        });
+        WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+        if (focused) {
+            WindowFocusEvent e;
+            data.eventCallback(e);
+        } else {
+            WindowLostFocusEvent e;
+            data.eventCallback(e);
+        }
+    });
 
     glfwSetKeyCallback(m_window, [](GLFWwindow *window, int key, int scancode,
                                     int action, int mods) {
-            WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+        WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
 
-            if (action == GLFW_PRESS) {
-                KeyPressedEvent e(key);
-                data.eventCallback(e);
-            } else if (action == GLFW_RELEASE) {
-                KeyReleasedEvent e(key);
-                data.eventCallback(e);
-            }
-        });
+        if (action == GLFW_PRESS) {
+            KeyPressedEvent e(key);
+            data.eventCallback(e);
+        } else if (action == GLFW_RELEASE) {
+            KeyReleasedEvent e(key);
+            data.eventCallback(e);
+        }
+    });
 
     glfwSetCursorPosCallback(
         m_window, [](GLFWwindow *window, double xpos, double ypos) {
@@ -137,11 +142,11 @@ void Window::init(const WindowProps &props) {
         });
 
     glfwSetCharCallback(m_window, [](GLFWwindow *window, unsigned int codept) {
-            WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
+        WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);
 
-            CharTypedEvent e(codept);
-            data.eventCallback(e);
-        });
+        CharTypedEvent e(codept);
+        data.eventCallback(e);
+    });
 
     // Set up window polling / input
     Input::s_window = m_window;
@@ -154,7 +159,7 @@ void Window::shutdown() {
 
 void Window::onUpdate() {
     glfwPollEvents();
-    glfwSwapBuffers(m_window);
+    m_graphicsContext->swapBuffers();
 }
 
 void Window::setVSync(bool enabled) {

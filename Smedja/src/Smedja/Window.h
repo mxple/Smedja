@@ -4,6 +4,7 @@
 
 #include "Smedja/Events/Event.h"
 #include "Smedja/Input.h"
+#include "Smedja/Renderer/GLContext.h"
 #include "pch.h"
 
 namespace Smedja {
@@ -61,6 +62,7 @@ private:
     void shutdown();
 
     GLFWwindow *m_window;
+    GLContext* m_graphicsContext;
 
     struct WindowData {
         std::string title;

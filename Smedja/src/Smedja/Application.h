@@ -36,6 +36,10 @@ private:
     bool m_Running = true;
     bool m_focused = true;
     LayerStack m_layerStack;
+
+
+    // temp
+    unsigned int m_VAO, m_VBO, m_VEO, m_shaderProgram;
 };
 
 // To be defined in client
