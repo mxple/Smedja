@@ -3,6 +3,8 @@
 #include "Events/ApplicationEvent.h"
 #include "Events/Event.h"
 #include "LayerStack.h"
+#include "Smedja/Renderer/Buffer.h"
+#include "Smedja/Renderer/Shader.h"
 #include "Window.h"
 
 namespace Smedja {
@@ -39,7 +41,10 @@ private:
 
 
     // temp
-    unsigned int m_VAO, m_VBO, m_VEO, m_shaderProgram;
+    unsigned int m_VAO;
+    std::unique_ptr<VertexBuffer> m_vertexBuffer;
+    std::unique_ptr<IndexBuffer> m_indexBuffer;
+    Shader m_shader;
 };
 
 // To be defined in client

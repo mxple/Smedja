@@ -15,87 +15,61 @@ Application::Application() {
     m_Window = std::unique_ptr<Window>(new Window());
     m_Window->setEventCallback(SD_BIND_EVENT_FN(Application::onEvent));
 
-    // FIRST TRIANGLE
+    // FIRST TRIANGLE (now square)
     float vertices[] = {
-        -0.5, -0.5, 0.0,
-         0.5, -0.5, 0.0,
-         0.0,  0.5, 0.0,
+        -0.5, -0.5, 0.0,    1.0, 0.0, 0.0,
+        -0.5,  0.5, 0.0,    0.0, 1.0, 0.0,
+         0.5, -0.5, 0.0,    0.0, 0.0, 1.0,
+         0.5,  0.5, 0.0,    1.0, 1.0, 1.0
     };
+    unsigned int indices[] = {
+        0, 1, 2,   // first triangle
+        1, 2, 3    // second triangle
+    };  
     const char *vertexShaderSource = R"(
         #version 330 core
         layout (location = 0) in vec3 aPos;
+        layout (location = 1) in vec3 aCol;
+
+        out vec3 ourColor;
 
         void main() {
-            gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
+            gl_Position = vec4(aPos, 1.0);
+            ourColor = aCol;
         }
     )";
     const char *fragmentShaderSource = R"(
         #version 330 core
         out vec4 FragColor;
+        in vec3 ourColor;
 
         void main()
         {
-            FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+            FragColor = vec4(ourColor, 1.0f);
         } 
     )";
 
-    unsigned int vertexShader;
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-
-    int  success;
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        char infoLog[512];
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        SD_CORE_ERROR("{}", infoLog);
-    }
-
-    unsigned int fragmentShader;
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        char infoLog[512];
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-        SD_CORE_ERROR("{}", infoLog);
-    }
-
-    m_shaderProgram = glCreateProgram();
-    glAttachShader(m_shaderProgram, vertexShader);
-    glAttachShader(m_shaderProgram, fragmentShader);
-    glLinkProgram(m_shaderProgram);
-
-    glGetProgramiv(m_shaderProgram, GL_LINK_STATUS, &success);
-    if (!success) {
-        char infoLog[512];
-        glGetShaderInfoLog(m_shaderProgram, 512, NULL, infoLog);
-        SD_CORE_ERROR("{}", infoLog);
-    }
-    // glUseProgram(shaderProgram);
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
+    m_shader.init(vertexShaderSource, fragmentShaderSource);
 
     glGenVertexArrays(1, &m_VAO);
-    glGenBuffers(1, &m_VBO);
-
     glBindVertexArray(m_VAO);
 
-    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    m_vertexBuffer.reset(new VertexBuffer(vertices, sizeof(vertices)));
+    m_indexBuffer.reset(new IndexBuffer(indices, sizeof(indices)));
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
+    m_vertexBuffer->bind();
+    m_indexBuffer->bind();
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
                           (void*)0);
-    glEnableVertexArrayAttrib(m_VAO, 0);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
+                          (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);   // unbind VBO
+    m_vertexBuffer->unbind();
 
-    glBindVertexArray(0);   // unbind VAO
+    glBindVertexArray(0);   // unbind VAO, not strictly necessary
 }
 
 Application::~Application() {}
@@ -103,13 +77,19 @@ Application::~Application() {}
 void Application::run() {
     while (m_Running) {
         if (m_focused) {
-            glClearColor(1, 1, 1, 1);
+            glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
+            // // play around with uniforms
+            // float time = glfwGetTime();
+            // int uniformTimeLocation = glGetUniformLocation(m_shaderProgram, "uTime");
+            // glUseProgram(m_shaderProgram);
+            // glUniform1f(uniformTimeLocation, time);
+
             // draw triangle!
-            glUseProgram(m_shaderProgram);
+            m_shader.bind();
             glBindVertexArray(m_VAO);
-            glDrawArrays(GL_TRIANGLES, 0, 3);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
             for (Layer *layer : m_layerStack) {
                 layer->onUpdate();
