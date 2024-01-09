@@ -17,39 +17,20 @@ Application::Application() {
 
     // FIRST TRIANGLE (now square)
     float vertices[] = {
-        -0.5, -0.5, 0.0,    1.0, 0.0, 0.0,
-        -0.5,  0.5, 0.0,    0.0, 1.0, 0.0,
-         0.5, -0.5, 0.0,    0.0, 0.0, 1.0,
-         0.5,  0.5, 0.0,    1.0, 1.0, 1.0
+        // positions        // colors           // texture coords
+        -0.5, -0.5, 0.0,    1.0, 0.0, 0.0,      0.0,  0.0,
+        -0.5,  0.5, 0.0,    0.0, 1.0, 0.0,      0.0,  1.0,
+         0.5, -0.5, 0.0,    0.0, 0.0, 1.0,      1.0,  0.0,
+         0.5,  0.5, 0.0,    1.0, 1.0, 1.0,      1.0,  1.0,
     };
     unsigned int indices[] = {
         0, 1, 2,   // first triangle
         1, 2, 3    // second triangle
     };  
-    const char *vertexShaderSource = R"(
-        #version 330 core
-        layout (location = 0) in vec3 aPos;
-        layout (location = 1) in vec3 aCol;
 
-        out vec3 ourColor;
-
-        void main() {
-            gl_Position = vec4(aPos, 1.0);
-            ourColor = aCol;
-        }
-    )";
-    const char *fragmentShaderSource = R"(
-        #version 330 core
-        out vec4 FragColor;
-        in vec3 ourColor;
-
-        void main()
-        {
-            FragColor = vec4(ourColor, 1.0f);
-        } 
-    )";
-
-    m_shader.init(vertexShaderSource, fragmentShaderSource);
+    m_shader.reset(new Shader("data/shaders/test.vert", "data/shaders/test.frag"));
+    m_texture1.reset(new Texture("data/metal_crate.png"));
+    m_texture2.reset(new Texture("data/metal_crate_normal.png"));
 
     glGenVertexArrays(1, &m_VAO);
     glBindVertexArray(m_VAO);
@@ -60,12 +41,15 @@ Application::Application() {
     m_vertexBuffer->bind();
     m_indexBuffer->bind();
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
                           (void*)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
                           (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
+                          (void*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
 
     m_vertexBuffer->unbind();
 
@@ -73,8 +57,14 @@ Application::Application() {
 }
 
 Application::~Application() {}
-
+#define GLCall(x)                                                              \
+    while (glGetError() != GL_NO_ERROR)                                        \
+        ;                                                                      \
+    x;                                                                         \
+    SD_CORE_ERROR("GL Error: {0}", #x);
 void Application::run() {
+    SD_CORE_INFO("Ready to run!");
+
     while (m_Running) {
         if (m_focused) {
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -87,7 +77,12 @@ void Application::run() {
             // glUniform1f(uniformTimeLocation, time);
 
             // draw triangle!
-            m_shader.bind();
+            m_shader->bind();
+            m_texture1->bind(0);
+            m_texture2->bind(1);
+
+            m_shader->setUniform1i("uTexture1", 0);
+            m_shader->setUniform1i("uTexture2", 1);
             glBindVertexArray(m_VAO);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

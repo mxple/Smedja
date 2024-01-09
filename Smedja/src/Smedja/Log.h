@@ -3,6 +3,8 @@
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
 
+#include <glad/glad.h>
+
 namespace Smedja {
 
 class Log {
@@ -37,3 +39,6 @@ public:
 #define SD_ERROR(...)         ::Smedja::Log::getClientLogger()->error(__VA_ARGS__)
 #define SD_CRITICAL(...)      ::Smedja::Log::getClientLogger()->critical(__VA_ARGS__)
 // clang-format on
+
+GLenum glCheckError_(const char *file, int line);
+#define glCheckError() glCheckError_(__FILE__, __LINE__) 

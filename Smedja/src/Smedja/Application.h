@@ -5,6 +5,7 @@
 #include "LayerStack.h"
 #include "Smedja/Renderer/Buffer.h"
 #include "Smedja/Renderer/Shader.h"
+#include "Smedja/Renderer/Texture.h"
 #include "Window.h"
 
 namespace Smedja {
@@ -44,7 +45,9 @@ private:
     unsigned int m_VAO;
     std::unique_ptr<VertexBuffer> m_vertexBuffer;
     std::unique_ptr<IndexBuffer> m_indexBuffer;
-    Shader m_shader;
+    std::unique_ptr<Shader> m_shader;
+    std::unique_ptr<Texture> m_texture1;
+    std::unique_ptr<Texture> m_texture2;
 };
 
 // To be defined in client

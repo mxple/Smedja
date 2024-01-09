@@ -6,21 +6,73 @@ namespace Smedja {
 
 class Shader {
 public:
-    Shader();   // no arg constructor for when we pass in code directly
-    Shader(std::string& vertPath, std::string& fragPath);
+    Shader(); // no arg constructor for when we pass in code directly
+    Shader(const std::string &vertPath, const std::string &fragPath);
     ~Shader();
 
     // takes in source code for shaders and then compiles + links them
-    void init(const char* vertSource, const char* fragSource);
+    void init(const char *vertSource, const char *fragSource);
 
     void bind();
     void unbind();
 
     // uniforms
-    void setUniform();
+    // see https://registry.khronos.org/OpenGL-Refpages/gl4/html/glUniform.xhtml
+    void setUniform1f(const std::string &name, float v0);
+
+    void setUniform2f(const std::string &name, float v0, GLfloat v1);
+
+    void setUniform3f(const std::string &name, float v0, GLfloat v1, float v2);
+
+    void setUniform4f(const std::string &name, float v0, GLfloat v1, float v2,
+                      GLfloat v3);
+
+    void setUniform1i(const std::string &name, int v0);
+
+    void setUniform2i(const std::string &name, int v0, int v1);
+
+    void setUniform3i(const std::string &name, int v0, int v1, int v2);
+
+    void setUniform4i(const std::string &name, int v0, int v1, int v2, int v3);
+
+    void setUniform1ui(const std::string &name, unsigned int v0);
+
+    void setUniform2ui(const std::string &name, unsigned int v0,
+                       unsigned int v1);
+
+    void setUniform3ui(const std::string &name, unsigned int v0,
+                       unsigned int v1, unsigned int v2);
+
+    void setUniform4ui(const std::string &name, unsigned int v0,
+                       unsigned int v1, unsigned int v2, unsigned int v3);
+
+    void setUniformMat2x2(const std::string &name, const float *value);
+
+    void setUniformMat3x3(const std::string &name, const float *value);
+
+    void setUniformMat4x4(const std::string &name, const float *value);
+
+    void setUniformMat2x3(const std::string &name, const float *value);
+
+    void setUniformMat3x2(const std::string &name, const float *value);
+
+    void setUniformMat2x4(const std::string &name, const float *value);
+
+    void setUniformMat4x2(const std::string &name, const float *value);
+
+    void setUniformMat3x4(const std::string &name, const float *value);
+
+    void setUniformMat4x3(const std::string &name, const float *value);
+
+    // TODO add glm type support
     
+    // public in case user wants to use unsupported uniform setter and
+    // still wishes to keep cache functionality
+    int getUniformLocation(const std::string &name);
+
 private:
     unsigned int m_ID;
+    std::unordered_map<std::string, int> m_uniformLocationCache;
 };
 
-}
+} // namespace Smedja

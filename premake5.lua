@@ -14,6 +14,7 @@ IncludeDir["glad"] = "Smedja/vendor/glad/include"
 IncludeDir["ImGui"] = "Smedja/vendor/ImGui"
 IncludeDir["glm"] = "Smedja/vendor/glm/glm"
 IncludeDir["spdlog"] = "Smedja/vendor/spdlog/include"
+IncludeDir["stb_image"] = "Smedja/vendor/stb_image"
 
 include "Smedja/vendor/glfw"	-- include premake file
 include "Smedja/vendor/glad"	-- include premake file
@@ -56,17 +57,22 @@ project "Smedja"
 		"%{IncludeDir.glad}",
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
+		"%{IncludeDir.stb_image}",
 	}
 
 	defines {
 		"GLFW_INCLUDE_NONE"
 	}
 
+	-- Enable SSE2 vector processing
+	vectorextensions "SSE2"
+
 	filter "configurations:Debug"
 		-- warnings "Extra"
 		defines "DEBUG"
 		runtime "Debug"
 		symbols "on"
+		-- optimize "on" -- hack to use stb_image with SIMD enabled
 
 	filter "configurations:Release"
 		defines "RELEASE"
@@ -99,6 +105,9 @@ project "Sandbox"
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
 	}
+
+	-- Enable SSE2 vector processing
+	vectorextensions "SSE2"
 
 	filter "configurations:Debug"
 		-- warnings "Extra"
