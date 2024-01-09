@@ -1,5 +1,5 @@
 # Smedja
-Smedja is a game engine based on [TheCherno's Hazel game engine](https://github.com/TheCherno/Hazel).
+Smedja is a work-in-progress game engine I'm developing while following along with The Cherno's Game Engine series.
 
 Prounounced smee-ah-dee-ah, Smedja means "forge" or "smithery" in Swedish.
 
