@@ -13,3 +13,4 @@ ecc.sh
 app
 .clang-format
 imgui.ini
+Session.vim
