@@ -6,23 +6,28 @@ workspace "Smedja"
 		"Release"
 	}
 
+    flags { "MultiProcessorCompile" }
+
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
-IncludeDir["glfw"] = "Smedja/vendor/glfw/include"
 IncludeDir["glad"] = "Smedja/vendor/glad/include"
-IncludeDir["ImGui"] = "Smedja/vendor/ImGui"
+IncludeDir["glfw"] = "Smedja/vendor/glfw/include"
+IncludeDir["imgui"] = "Smedja/vendor/imgui"
 IncludeDir["glm"] = "Smedja/vendor/glm/glm"
 IncludeDir["spdlog"] = "Smedja/vendor/spdlog/include"
 IncludeDir["stb_image"] = "Smedja/vendor/stb_image"
 
-include "Smedja/vendor/glfw"	-- include premake file
-include "Smedja/vendor/glad"	-- include premake file
-include "Smedja/vendor/ImGui"	-- include premake file
+include "Smedja/vendor/glad.lua"
+include "Smedja/vendor/glfw.lua"
+include "Smedja/vendor/glm.lua"
+include "Smedja/vendor/imgui.lua"
+include "Smedja/vendor/spdlog.lua"
+include "Smedja/vendor/stb_image.lua"
 
 project "Smedja"
 	location "Smedja"
-	kind "sharedlib"
+	kind "SharedLib"
 	language "C++"
 	cppdialect "C++17"
 
@@ -32,7 +37,7 @@ project "Smedja"
 	links {
 		"glfw",
 		"glad",
-		"ImGui",
+		"imgui",
 		"GL",
 		"X11",
 		"Xrandr",
@@ -55,7 +60,7 @@ project "Smedja"
 		"%{IncludeDir.spdlog}",
 		"%{IncludeDir.glfw}",
 		"%{IncludeDir.glad}",
-		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.imgui}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
 	}
@@ -63,9 +68,6 @@ project "Smedja"
 	defines {
 		"GLFW_INCLUDE_NONE"
 	}
-
-	-- Enable SSE2 vector processing
-	vectorextensions "SSE2"
 
 	filter "configurations:Debug"
 		-- warnings "Extra"
@@ -99,18 +101,9 @@ project "Sandbox"
 
 	includedirs {
 		"Smedja/src",
-		"%{IncludeDir.spdlog}",
-		"%{IncludeDir.glfw}",
-		"%{IncludeDir.glad}",
-		"%{IncludeDir.ImGui}",
-		"%{IncludeDir.glm}",
 	}
 
-	-- Enable SSE2 vector processing
-	vectorextensions "SSE2"
-
 	filter "configurations:Debug"
-		-- warnings "Extra"
 		defines "DEBUG"
 		runtime "Debug"
 		symbols "on"
