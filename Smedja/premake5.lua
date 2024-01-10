@@ -1,5 +1,5 @@
 project "Smedja"
-    kind "SharedLib"
+    kind "StaticLib"
     language "C++"
     cppdialect "C++17"
 

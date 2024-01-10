@@ -2,6 +2,8 @@
 
 #include "pch.h"
 
+#include <glm/glm.hpp>
+
 namespace Smedja {
 
 class Shader {
@@ -64,6 +66,23 @@ public:
 
     void setUniformMat4x3(const std::string &name, const float *value);
 
+    void setUniformMat2x2(const std::string &name, glm::mat2x2 &mat);
+
+    void setUniformMat3x3(const std::string &name, glm::mat3x3 &mat);
+
+    void setUniformMat4x4(const std::string &name, glm::mat4x4 &mat);
+
+    void setUniformMat2x3(const std::string &name, glm::mat2x3 &mat);
+
+    void setUniformMat3x2(const std::string &name, glm::mat3x2 &mat);
+
+    void setUniformMat2x4(const std::string &name, glm::mat2x4 &mat);
+
+    void setUniformMat4x2(const std::string &name, glm::mat4x2 &mat);
+
+    void setUniformMat3x4(const std::string &name, glm::mat3x4 &mat);
+
+    void setUniformMat4x3(const std::string &name, glm::mat4x3 &mat);
     // TODO add glm type support
     
     // public in case user wants to use unsupported uniform setter and

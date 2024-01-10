@@ -9,7 +9,10 @@ project "Sandbox"
     objdir("../obj/" .. outputdir .. "/%{prj.name}")
 
     links {
-	"Smedja"
+	"Smedja",
+    	"glfw",
+	"glad",
+	"imgui",
     }
 
     files {

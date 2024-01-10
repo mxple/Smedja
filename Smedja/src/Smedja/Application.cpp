@@ -1,6 +1,8 @@
 #include "Application.h"
 
 #include <glad/glad.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "Smedja/Input.h"
 #include "pch.h"
@@ -52,16 +54,10 @@ Application::Application() {
     glEnableVertexAttribArray(2);
 
     m_vertexBuffer->unbind();
-
-    glBindVertexArray(0);   // unbind VAO, not strictly necessary
 }
 
 Application::~Application() {}
-#define GLCall(x)                                                              \
-    while (glGetError() != GL_NO_ERROR)                                        \
-        ;                                                                      \
-    x;                                                                         \
-    SD_CORE_ERROR("GL Error: {0}", #x);
+
 void Application::run() {
     SD_CORE_INFO("Ready to run!");
 
@@ -70,14 +66,22 @@ void Application::run() {
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
-            // // play around with uniforms
-            // float time = glfwGetTime();
-            // int uniformTimeLocation = glGetUniformLocation(m_shaderProgram, "uTime");
-            // glUseProgram(m_shaderProgram);
-            // glUniform1f(uniformTimeLocation, time);
+            // transforms and camera!
+            glm::mat4 model = glm::mat4(1.0f);
+            glm::mat4 view = glm::mat4(1.0f);
+            glm::mat4 projection = glm::mat4(1.0f);
+
+            model = glm::rotate(model, glm::radians(-30.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+            view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+            projection = glm::perspective(glm::radians(45.0f), (float)m_Window->getWidth() / (float)m_Window->getHeight(), 0.1f, 100.0f);
 
             // draw triangle!
             m_shader->bind();
+
+            m_shader->setUniformMat4x4("uModel", model);
+            m_shader->setUniformMat4x4("uView", view);
+            m_shader->setUniformMat4x4("uProjection", projection);
+
             m_texture1->bind(0);
             m_texture2->bind(1);
 

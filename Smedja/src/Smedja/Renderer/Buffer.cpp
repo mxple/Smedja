@@ -1,5 +1,4 @@
 #include "Buffer.h"
-#include <glad/glad.h>
 
 namespace Smedja {
 
@@ -12,6 +11,17 @@ VertexBuffer::VertexBuffer(float *vertices, unsigned int size) {
 VertexBuffer::~VertexBuffer() {
     glDeleteBuffers(1, &m_ID);
 }
+
+void VertexBuffer::setData(float *vertices, unsigned int size) {
+    glBindBuffer(GL_ARRAY_BUFFER, m_ID);
+    glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+}
+
+void VertexBuffer::setLayout(BufferLayout &layout) {
+    m_layout = layout;	// need copy constructor? or is this move?
+}
+
+BufferLayout& getLayout();
 
 void VertexBuffer::bind() {
     glBindBuffer(GL_ARRAY_BUFFER, m_ID);

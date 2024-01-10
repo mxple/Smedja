@@ -16,11 +16,11 @@ public:
     ImGuiLayer();
     ~ImGuiLayer();
 
-    virtual void onAttach();
-    virtual void onDetach();
+    virtual void onAttach() override;
+    virtual void onDetach() override;
 
-    virtual void onUpdate();
-    virtual void onEvent(Event& e);
+    virtual void onUpdate() override;
+    virtual void onEvent(Event& e) override;
 
 private:
     bool onMouseButtonPressedEvent(MouseButtonPressedEvent& e);
@@ -35,6 +35,9 @@ private:
     bool onWindowLostFocusEvent(WindowLostFocusEvent &e);
 
     static ImGuiKey convertGLFWKeyCodeToImGuiKeyCode(int keycode);
+
+    bool m_showDemoWindow = false;
+    bool m_renderImGui = true;
 };
 
 }

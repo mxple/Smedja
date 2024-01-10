@@ -1,5 +1,7 @@
 #pragma once
 
+#include "BufferUtils.h"
+
 namespace Smedja {
 
 class VertexBuffer {
@@ -7,11 +9,17 @@ public:
     VertexBuffer(float *vertices, unsigned int size);
     ~VertexBuffer();
 
+    void setData(float *vertices, unsigned int size);
+
+    void setLayout(BufferLayout &layout);
+    BufferLayout &getLayout();
+
     void bind();
     void unbind();
 
 private:
     unsigned int m_ID;
+    BufferLayout m_layout;  // should this be optional?
 };
 
 class IndexBuffer {
