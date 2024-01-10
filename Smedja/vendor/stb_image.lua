@@ -2,8 +2,8 @@ project "stb_image"
     kind "StaticLib"
     language "C++"
 
-    targetdir "../../bin/%{cfg.buildcfg}"
-    objdir "../../obj/%{cfg.buildcfg}"
+    targetdir("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
+    objdir("%{wks.location}/obj/" .. outputdir .. "/%{prj.name}")
 
     includedirs { "stb_image/" }
 

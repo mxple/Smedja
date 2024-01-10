@@ -14,3 +14,4 @@ app
 .clang-format
 imgui.ini
 Session.vim
+Smedja/vendor/*.make

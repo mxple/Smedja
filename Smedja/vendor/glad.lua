@@ -1,44 +1,44 @@
 project "glad"
-	kind "StaticLib"
-	language "C"
+    kind "StaticLib"
+    language "C"
 
-	targetdir ("../bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("../obj/" .. outputdir .. "/%{prj.name}")
-	
+    targetdir("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
+    objdir("%{wks.location}/obj/" .. outputdir .. "/%{prj.name}")
+    
     includedirs { "glad/include/" }
 
-	files 
+    files 
+    {
+	"glad/src/glad.c",
+	"glad/include/glad/glad.h",
+	"glad/include/KHR/khrplatform.h"
+    }
+
+    filter "system:linux"
+	pic "On"
+
+	systemversion "latest"
+	staticruntime "On"
+
+	defines
 	{
-		"glad/src/glad.c",
-		"glad/include/glad/glad.h",
-		"glad/include/KHR/khrplatform.h"
+	    "_GLAD_X11"
 	}
-    
-	filter "system:linux"
-		pic "On"
 
-		systemversion "latest"
-		staticruntime "On"
+    filter "system:windows"
+	systemversion "latest"
+	staticruntime "On"
 
-		defines
-		{
-			"_GLAD_X11"
-		}
+	defines 
+	{ 
+	    "_GLAD_WIN32",
+	    "_CRT_SECURE_NO_WARNINGS"
+	}
 
-	filter "system:windows"
-		systemversion "latest"
-		staticruntime "On"
+    filter "configurations:Debug"
+	runtime "Debug"
+	symbols "on"
 
-		defines 
-		{ 
-			"_GLAD_WIN32",
-			"_CRT_SECURE_NO_WARNINGS"
-		}
-
-	filter "configurations:Debug"
-		runtime "Debug"
-		symbols "on"
-
-	filter "configurations:Release"
-		runtime "Release"
-		optimize "on"
+    filter "configurations:Release"
+	runtime "Release"
+	optimize "speed"
