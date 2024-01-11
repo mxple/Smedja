@@ -7,7 +7,6 @@ compile_commands/
 # Files
 *.user
 Makefile
-compile_commands.json
 ecc.sh
 .ignore
 app
