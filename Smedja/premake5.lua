@@ -16,7 +16,10 @@ project "Smedja"
 
     files {
 	"src/**.h",
-	"src/**.cpp"
+	"src/**.cpp",
+
+	"vendor/glm/glm/**",
+	"vendor/stb_image/**",
     }
 
     includedirs {

@@ -1,5 +1,5 @@
 project "stb_image"
-    kind "StaticLib"
+    kind "Utility"
     language "C++"
 
     targetdir("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")

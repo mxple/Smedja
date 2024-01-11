@@ -8,6 +8,7 @@ project "Sandbox"
     targetdir("../bin/" .. outputdir .. "/%{prj.name}")
     objdir("../obj/" .. outputdir .. "/%{prj.name}")
 
+    -- premake does not seem to propagate links
     links {
 	"Smedja",
     	"glfw",
@@ -29,6 +30,16 @@ project "Sandbox"
 	"%{IncludeDir.glm}",
 	"%{IncludeDir.stb_image}"
     }
+
+    filter "system:macosx"
+	links 
+	{
+	    "Carbon.framework",
+	    "Cocoa.framework",
+	    "CoreVideo.framework",
+	    "IOKit.framework",
+	    "OpenGL.framework",
+	}
 
     filter "configurations:Debug"
 	defines "DEBUG"

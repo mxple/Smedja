@@ -4,7 +4,7 @@ project "glm"
 
     targetdir("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
     objdir("%{wks.location}/obj/" .. outputdir .. "/%{prj.name}")
-    
+
     includedirs { "glm/" }
 
     files
@@ -27,8 +27,8 @@ project "glm"
 	    systemversion "latest"
 	    staticruntime "On"
 
-	    defines 
-	    { 
+	    defines
+	    {
 		    "_GLM_WIN32",
 		    "_CRT_SECURE_NO_WARNINGS"
 	    }

@@ -1,5 +1,5 @@
 project "spdlog"
-    kind "StaticLib"
+    kind "Makefile"
     language "C++"
 
     targetdir("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
