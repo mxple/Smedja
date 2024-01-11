@@ -18,10 +18,12 @@ void VertexBuffer::setData(float *vertices, unsigned int size) {
 }
 
 void VertexBuffer::setLayout(BufferLayout &layout) {
-    m_layout = layout;	// need copy constructor? or is this move?
+    m_layout = std::move(layout);
 }
 
-BufferLayout& getLayout();
+BufferLayout& VertexBuffer::getLayout() {
+    return m_layout;
+}
 
 void VertexBuffer::bind() {
     glBindBuffer(GL_ARRAY_BUFFER, m_ID);

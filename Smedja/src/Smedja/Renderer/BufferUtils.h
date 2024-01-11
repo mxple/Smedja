@@ -38,11 +38,11 @@ struct BufferElement {
     GLenum m_glType;
     bool m_normalized;
     // stride handled by layout class
-    unsigned int m_offset;  // m_offset calculated by layout class
+    void *m_offset;  // m_offset calculated by layout class
     
     BufferElement() = default;
 
-    BufferElement(ShaderDataType type, bool normalized = true) :
+    BufferElement(ShaderDataType type, bool normalized = false) :
         m_componentCount(calcComponentCount(type)), m_type(type),
         m_glType(getGLType(type)), m_normalized(normalized) {}
 
@@ -89,11 +89,19 @@ struct BufferElement {
 // Basically a utility wrapper around std::vector<BufferElement>
 class BufferLayout {
 public:
-    BufferLayout();
+    BufferLayout() = default;
 
     BufferLayout(std::initializer_list<BufferElement> elements) 
         : m_elements(elements) {
         calcStrideAndOffsets();
+    }
+    
+    // For move
+    BufferLayout(BufferLayout&&) = default;
+    BufferLayout& operator=(BufferLayout&&) = default;
+
+    unsigned int getStride() const {
+        return m_stride;
     }
 
     // TODO check this for memory safety
@@ -111,7 +119,7 @@ public:
         return m_elements.empty();
     }
 
-	const std::vector<BufferElement>& GetElements() const {
+    const std::vector<BufferElement>& GetElements() const {
         return m_elements;
     }
 
@@ -132,9 +140,9 @@ private:
     void calcStrideAndOffsets() {
         m_stride = 0;
         unsigned int sz = 0;
-        unsigned int offset = 0;
+        unsigned long offset = 0;   // long to prevent warning
         for (BufferElement &e : m_elements) { 
-            e.m_offset = offset;
+            e.m_offset = (void *) offset;
             sz         = getShaderTypeSize(e.m_type);
             offset    += sz;
             m_stride  += sz;
