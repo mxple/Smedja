@@ -187,39 +187,39 @@ void Shader::setUniformMat4x3(const std::string &name, const float *value) {
     glUniformMatrix4x3fv(getUniformLocation(name), 1, GL_FALSE, value);
 }
 
-void Shader::setUniformMat2x2(const std::string &name, glm::mat2x2 &mat) {
+void Shader::setUniformMat2x2(const std::string &name, const glm::mat2x2 &mat) {
     glUniformMatrix2fv(getUniformLocation(name), 1, GL_FALSE, &mat[0][0]);
 }
 
-void Shader::setUniformMat3x3(const std::string &name, glm::mat3x3 &mat) {
+void Shader::setUniformMat3x3(const std::string &name, const glm::mat3x3 &mat) {
     glUniformMatrix3fv(getUniformLocation(name), 1, GL_FALSE, &mat[0][0]);
 }
 
-void Shader::setUniformMat4x4(const std::string &name, glm::mat4x4 &mat) {
+void Shader::setUniformMat4x4(const std::string &name, const glm::mat4x4 &mat) {
     glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, &mat[0][0]);
 }
 
-void Shader::setUniformMat2x3(const std::string &name, glm::mat2x3 &mat) {
+void Shader::setUniformMat2x3(const std::string &name, const glm::mat2x3 &mat) {
     glUniformMatrix2x3fv(getUniformLocation(name), 1, GL_FALSE, &mat[0][0]);
 }
 
-void Shader::setUniformMat3x2(const std::string &name, glm::mat3x2 &mat) {
+void Shader::setUniformMat3x2(const std::string &name, const glm::mat3x2 &mat) {
     glUniformMatrix3x2fv(getUniformLocation(name), 1, GL_FALSE, &mat[0][0]);
 }
 
-void Shader::setUniformMat2x4(const std::string &name, glm::mat2x4 &mat) {
+void Shader::setUniformMat2x4(const std::string &name, const glm::mat2x4 &mat) {
     glUniformMatrix2x4fv(getUniformLocation(name), 1, GL_FALSE, &mat[0][0]);
 }
 
-void Shader::setUniformMat4x2(const std::string &name, glm::mat4x2 &mat) {
+void Shader::setUniformMat4x2(const std::string &name, const glm::mat4x2 &mat) {
     glUniformMatrix4x2fv(getUniformLocation(name), 1, GL_FALSE, &mat[0][0]);
 }
 
-void Shader::setUniformMat3x4(const std::string &name, glm::mat3x4 &mat) {
+void Shader::setUniformMat3x4(const std::string &name, const glm::mat3x4 &mat) {
     glUniformMatrix3x4fv(getUniformLocation(name), 1, GL_FALSE, &mat[0][0]);
 }
 
-void Shader::setUniformMat4x3(const std::string &name, glm::mat4x3 &mat) {
+void Shader::setUniformMat4x3(const std::string &name, const glm::mat4x3 &mat) {
     glUniformMatrix4x3fv(getUniformLocation(name), 1, GL_FALSE, &mat[0][0]);
 }
 

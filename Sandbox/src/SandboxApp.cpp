@@ -79,7 +79,6 @@ public:
         };
         // transforms and camera!
         glm::mat4 model = glm::mat4(1.0f);
-        glm::mat4 view = glm::mat4(1.0f);
         glm::mat4 projection = glm::mat4(1.0f);
 
         float time = glfwGetTime();
@@ -95,7 +94,6 @@ public:
         // Apply the rotation to the original vector
         axis = glm::vec4(axis, 1.0f) * rotationMatrix;
 
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
         projection = glm::perspective(glm::radians(45.0f), 
                                       (float)Smedja::Application::get().getWindow().getWidth() / 
                                       (float)Smedja::Application::get().getWindow().getHeight(),
@@ -104,7 +102,7 @@ public:
         // draw triangle!
         m_shader->bind();
 
-        m_shader->setUniformMat4x4("uView", view);
+        m_shader->setUniformMat4x4("uView", m_cameraController.getCamera().getView());
         m_shader->setUniformMat4x4("uProjection", projection);
 
         m_texture1->bind(0);
@@ -135,7 +133,7 @@ private:
     std::shared_ptr<Smedja::Shader> m_shader;
     std::shared_ptr<Smedja::Texture> m_texture1;
     std::shared_ptr<Smedja::Texture> m_texture2;
-
+    Smedja::CameraController<Smedja::EuclideanCamera> m_cameraController;
 };
 
 class Sandbox : public Smedja::Application {
