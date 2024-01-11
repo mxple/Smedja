@@ -1,5 +1,5 @@
 #include "GLContext.h"
-#include "Smedja/Core.h"
+#include "pch.h"
 #include <glad/glad.h>
 
 namespace Smedja {
@@ -10,6 +10,8 @@ void GLContext::init() {
     glfwMakeContextCurrent(m_windowHandle);
     int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
     SD_CORE_ASSERT(status, "Failed to initialize glad!");
+
+    glEnable(GL_DEPTH_TEST);  
 }
 
 void GLContext::swapBuffers() {

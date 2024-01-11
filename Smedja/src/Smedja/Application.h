@@ -6,6 +6,7 @@
 #include "Smedja/Renderer/Buffer.h"
 #include "Smedja/Renderer/Shader.h"
 #include "Smedja/Renderer/Texture.h"
+#include "Smedja/Renderer/VertexArray.h"
 #include "Window.h"
 
 namespace Smedja {
@@ -42,12 +43,12 @@ private:
 
 
     // temp
-    unsigned int m_VAO;
-    std::unique_ptr<VertexBuffer> m_vertexBuffer;
-    std::unique_ptr<IndexBuffer> m_indexBuffer;
-    std::unique_ptr<Shader> m_shader;
-    std::unique_ptr<Texture> m_texture1;
-    std::unique_ptr<Texture> m_texture2;
+    std::shared_ptr<VertexArray> m_vertexArray;
+    std::shared_ptr<VertexBuffer> m_vertexBuffer;
+    std::shared_ptr<IndexBuffer> m_indexBuffer;
+    std::shared_ptr<Shader> m_shader;
+    std::shared_ptr<Texture> m_texture1;
+    std::shared_ptr<Texture> m_texture2;
 };
 
 // To be defined in client

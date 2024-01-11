@@ -1,7 +1,6 @@
 #version 330 core
 out vec4 FragColor;
 in vec2 TexCoord;
-in vec3 ourColor;
 
 uniform sampler2D uTexture1;
 uniform sampler2D uTexture2;
