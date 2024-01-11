@@ -39,6 +39,15 @@ void Window::init(const WindowProps &props) {
         int success = glfwInit();
         SD_CORE_ASSERT(success, "Could not initialize GLFW!");
 
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+#ifdef __APPLE__
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+		glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_FALSE);
+#endif
+
         // Set GLFW error callback which will report GLFW errors using spdlog
         glfwSetErrorCallback([](int error, const char *description) {
             SD_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
