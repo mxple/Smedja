@@ -7,3 +7,6 @@
 [submodule "Smedja/vendor/imgui"]
 	path = Smedja/vendor/imgui
 	url = https://github.com/ocornut/imgui
+[submodule "Smedja/vendor/glm"]
+	path = Smedja/vendor/glm
+	url = https://github.com/g-truc/glm
