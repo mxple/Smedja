@@ -5,7 +5,7 @@
 
 class TestLayer : public Smedja::Layer {
 public:
-    TestLayer() : Layer("TestLayer") {
+    TestLayer() : Layer("TestLayer"), m_cameraController(m_camera) {
         float vertices[] = {
              0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
              0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
@@ -50,7 +50,7 @@ public:
             {Smedja::ShaderDataType::Float3},   // positionns
             {Smedja::ShaderDataType::Float2},   // texture coords
         };
-
+        
         m_shader.reset(new Smedja::Shader("data/shaders/test.vert", "data/shaders/test.frag"));
         m_texture1.reset(new Smedja::Texture("data/metal_crate.png"));
         m_texture2.reset(new Smedja::Texture("data/metal_crate_normal.png"));
@@ -133,7 +133,8 @@ private:
     std::shared_ptr<Smedja::Shader> m_shader;
     std::shared_ptr<Smedja::Texture> m_texture1;
     std::shared_ptr<Smedja::Texture> m_texture2;
-    Smedja::CameraController<Smedja::EuclideanCamera> m_cameraController;
+    Smedja::EuclideanCamera m_camera;
+    Smedja::CameraController m_cameraController;
 };
 
 class Sandbox : public Smedja::Application {

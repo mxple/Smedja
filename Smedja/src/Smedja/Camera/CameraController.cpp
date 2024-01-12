@@ -4,13 +4,9 @@
 
 namespace Smedja {
 
-template <typename CAM_TYPE>
-CameraController<CAM_TYPE>::CameraController(glm::vec3 pos, glm::vec3 front,
-                                             glm::vec3 up)
-    : m_camera(pos, front, up), m_yaw(0), m_pitch(0) {}
+CameraController::CameraController(Camera &camera) : m_camera(camera) {}
 
-template <typename CAM_TYPE>
-void CameraController<CAM_TYPE>::onEvent(Event &e) {
+void CameraController::onEvent(Event &e) {
     EventDispatcher dispatcher(e);
     dispatcher.dispatch<MouseMovedEvent>(
         SD_BIND_EVENT_FN(CameraController::onMouseMoved));
@@ -20,8 +16,7 @@ void CameraController<CAM_TYPE>::onEvent(Event &e) {
         SD_BIND_EVENT_FN(CameraController::onWindowResized));
 }
 
-template <typename CAM_TYPE>
-void CameraController<CAM_TYPE>::onUpdate() {
+void CameraController::onUpdate() {
     if (Input::isKeyPressed(SD_KEY_W)) {
         m_camera.m_pos += m_camera.m_front * m_moveSpeed;
     } else if (Input::isKeyPressed(SD_KEY_S)) {
@@ -41,8 +36,7 @@ void CameraController<CAM_TYPE>::onUpdate() {
     m_camera.updateView();
 }
 
-template <typename CAM_TYPE>
-bool CameraController<CAM_TYPE>::onMouseMoved(MouseMovedEvent &e) {
+bool CameraController::onMouseMoved(MouseMovedEvent &e) {
     float dx = e.getX() - m_mouseXLast;
     float dy = m_mouseYLast - e.getY(); // glfw coords flipped
     m_mouseXLast = e.getX();
@@ -60,21 +54,17 @@ bool CameraController<CAM_TYPE>::onMouseMoved(MouseMovedEvent &e) {
     return false;
 }
 
-template <typename CAM_TYPE>
-bool CameraController<CAM_TYPE>::onMouseScrolled(MouseScrolledEvent &e) {
+bool CameraController::onMouseScrolled(MouseScrolledEvent &e) {
     m_camera.m_fovDegree -= e.getYOffset();
     m_camera.m_fovDegree = glm::clamp(m_camera.m_fovDegree, 1.0f, 45.0f);
     m_camera.updateView();
     return false;
 }
 
-template <typename CAM_TYPE>
-bool CameraController<CAM_TYPE>::onWindowResized(WindowResizeEvent &e) {
+bool CameraController::onWindowResized(WindowResizeEvent &e) {
     m_camera.m_aspectRatio = (float)e.getWidth() / (float)e.getHeight();
     m_camera.updateView();
     return false;
 }
-
-template class CameraController<EuclideanCamera>;
 
 } // namespace Smedja

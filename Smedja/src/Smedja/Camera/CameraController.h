@@ -7,21 +7,19 @@
 
 namespace Smedja {
 
-template <typename CAM_TYPE>
 class CameraController {
 public:
-    CameraController(glm::vec3 pos = {0, 0, 0}, glm::vec3 front = {0, 0, -1},
-                     glm::vec3 up = {0, 1, 0});
+    CameraController(Camera &camera);
     ~CameraController() = default;
 
     void onEvent(Event &e);
 
     void onUpdate();
 
-    CAM_TYPE &getCamera() {
+    Camera &getCamera() {
         return m_camera;
     }
-    const CAM_TYPE &getCamera() const {
+    const Camera &getCamera() const {
         return m_camera;
     }
 
@@ -32,7 +30,7 @@ private:
     bool onWindowResized(WindowResizeEvent &e);
 
     // Euclidean or Quat
-    CAM_TYPE m_camera;
+    Camera &m_camera;
 
     float m_yaw;
     float m_pitch;

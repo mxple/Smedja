@@ -5,10 +5,10 @@
 namespace Smedja {
 
 // Virtual camera class, implementation left up to euclidean/quat camera.
-// Camera is responsible for managing and generating view matrix, nothing else.
+// Camera is responsible for managing and generating the view and projection 
+// matracies, nothing else.
 // To control the camera and use it, see the CameraController class.
 class Camera {
-    template <typename CAM_TYPE>
     friend class CameraController;
 public:
     Camera() = default;
