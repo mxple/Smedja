@@ -19,7 +19,7 @@ public:
     virtual void onAttach() override;
     virtual void onDetach() override;
 
-    virtual void onUpdate() override;
+    virtual void onUpdate(TimeStep &deltaTime) override;
     virtual void onEvent(Event& e) override;
 
 private:

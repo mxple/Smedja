@@ -22,12 +22,18 @@ public:
     // see https://registry.khronos.org/OpenGL-Refpages/gl4/html/glUniform.xhtml
     void setUniform1f(const std::string &name, float v0);
 
-    void setUniform2f(const std::string &name, float v0, GLfloat v1);
+    void setUniform2f(const std::string &name, float v0, float v1);
 
-    void setUniform3f(const std::string &name, float v0, GLfloat v1, float v2);
+    void setUniform3f(const std::string &name, float v0, float v1, float v2);
 
-    void setUniform4f(const std::string &name, float v0, GLfloat v1, float v2,
-                      GLfloat v3);
+    void setUniform4f(const std::string &name, float v0, float v1, float v2,
+                      float v3);
+
+    void setUniform2f(const std::string &name, glm::vec2 &vec);
+
+    void setUniform3f(const std::string &name, glm::vec3 &vec);
+
+    void setUniform4f(const std::string &name, glm::vec4 &vec);
 
     void setUniform1i(const std::string &name, int v0);
 
@@ -84,7 +90,7 @@ public:
 
     void setUniformMat4x3(const std::string &name, const glm::mat4x3 &mat);
     // TODO add glm type support
-    
+
     // public in case user wants to use unsupported uniform setter and
     // still wishes to keep cache functionality
     int getUniformLocation(const std::string &name);

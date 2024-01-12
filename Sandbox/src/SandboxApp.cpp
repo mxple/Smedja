@@ -1,43 +1,44 @@
 // #include "Smedja/ImGui/ImGuiLayer.h"
 #include <Smedja.h>
 #include <glm/glm.hpp>
+#include <glm/gtx/string_cast.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 class TestLayer : public Smedja::Layer {
 public:
     TestLayer() : Layer("TestLayer"), m_cameraController(m_camera) {
+        // cube
         float vertices[] = {
-             0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-             0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+             0.5f, -0.5f, -0.5f,  1.0f, 0.0f,   0.0f, 0.0f, -1.0f,
+             0.5f,  0.5f, -0.5f,  1.0f, 1.0f,   0.0f, 0.0f, -1.0f,
+            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,   0.0f, 0.0f, -1.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,   0.0f, 0.0f, -1.0f,
 
-             0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-             0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-            -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+             0.5f, -0.5f,  0.5f,  1.0f, 0.0f,   0.0f, 0.0f,  1.0f,
+             0.5f,  0.5f,  0.5f,  1.0f, 1.0f,   0.0f, 0.0f,  1.0f,
+            -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,   0.0f, 0.0f,  1.0f,
+            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,   0.0f, 0.0f,  1.0f,
 
-            -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-            -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+            -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,   -1.0f, 0.0f, 0.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,   -1.0f, 0.0f, 0.0f,
+            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,   -1.0f, 0.0f, 0.0f,
+            -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,   -1.0f, 0.0f, 0.0f,
 
-             0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-             0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-             0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-             0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+             0.5f,  0.5f, -0.5f,  1.0f, 1.0f,   1.0f, 0.0f, 0.0f,
+             0.5f, -0.5f, -0.5f,  0.0f, 1.0f,   1.0f, 0.0f, 0.0f,
+             0.5f, -0.5f,  0.5f,  0.0f, 0.0f,   1.0f, 0.0f, 0.0f,
+             0.5f,  0.5f,  0.5f,  1.0f, 0.0f,   1.0f, 0.0f, 0.0f,
 
-             0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-             0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+             0.5f, -0.5f, -0.5f,  1.0f, 1.0f,   0.0f, -1.0f, 0.0f,
+             0.5f, -0.5f,  0.5f,  1.0f, 0.0f,   0.0f, -1.0f, 0.0f,
+            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,   0.0f, -1.0f, 0.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,   0.0f, -1.0f, 0.0f,
 
-             0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-             0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-            -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+             0.5f,  0.5f, -0.5f,  1.0f, 1.0f,   0.0f, 1.0f, 0.0f,
+             0.5f,  0.5f,  0.5f,  1.0f, 0.0f,   0.0f, 1.0f, 0.0f,
+            -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
+            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,   0.0f, 1.0f, 0.0f,
         };
-
         unsigned int indices[] = {
              0,  1,  2,  2,  3,  0,
              4,  5,  6,  6,  7,  4,
@@ -49,36 +50,25 @@ public:
         Smedja::BufferLayout layout = {
             {Smedja::ShaderDataType::Float3},   // positionns
             {Smedja::ShaderDataType::Float2},   // texture coords
+            {Smedja::ShaderDataType::Float3},   // normals
         };
-        
-        m_shader.reset(new Smedja::Shader("data/shaders/test.vert", "data/shaders/test.frag"));
-        m_texture1.reset(new Smedja::Texture("data/metal_crate.png"));
-        m_texture2.reset(new Smedja::Texture("data/metal_crate_normal.png"));
 
-        m_vertexArray.reset(new Smedja::VertexArray());
+        m_shader.reset(new Smedja::Shader("data/shaders/default.vert", "data/shaders/lightTarget.frag"));
+        m_lightingShader.reset(new Smedja::Shader("data/shaders/default.vert", "data/shaders/lightCube.frag"));
+        m_texture1.reset(new Smedja::Texture("data/metal_crate.png"));
+
+        m_cube.reset(new Smedja::VertexArray());
         m_vertexBuffer.reset(new Smedja::VertexBuffer(vertices, sizeof(vertices)));
         m_indexBuffer.reset(new Smedja::IndexBuffer(indices, sizeof(indices)));
 
-        m_vertexBuffer->setLayout(layout);  // move occurs ( in theory )
-
-        m_vertexArray->addVertexBuffer(m_vertexBuffer);
-        m_vertexArray->setIndexBuffer(m_indexBuffer);
+        m_vertexBuffer->setLayout(layout);
+        m_cube->addVertexBuffer(m_vertexBuffer);
+        m_cube->setIndexBuffer(m_indexBuffer);
     }
-    void onUpdate() override {
-        glm::vec3 cubePositions[] = {
-            glm::vec3( 0.0f,  0.0f,  0.0f), 
-            glm::vec3( 2.0f,  5.0f, -15.0f), 
-            glm::vec3(-1.5f, -2.2f, -2.5f),  
-            glm::vec3(-3.8f, -2.0f, -12.3f),  
-            glm::vec3( 2.4f, -0.4f, -3.5f),  
-            glm::vec3(-1.7f,  3.0f, -7.5f),  
-            glm::vec3( 1.3f, -2.0f, -2.5f),  
-            glm::vec3( 1.5f,  2.0f, -2.5f), 
-            glm::vec3( 1.5f,  0.2f, -1.5f), 
-            glm::vec3(-1.3f,  1.0f, -1.5f)  
-        };
+    void onUpdate(Smedja::TimeStep &deltaTime) override {
+        m_cameraController.onUpdate(deltaTime);
+
         // transforms and camera!
-        glm::mat4 model = glm::mat4(1.0f);
         glm::mat4 projection = glm::mat4(1.0f);
 
         float time = glfwGetTime();
@@ -94,43 +84,52 @@ public:
         // Apply the rotation to the original vector
         axis = glm::vec4(axis, 1.0f) * rotationMatrix;
 
-        projection = glm::perspective(glm::radians(45.0f), 
-                                      (float)Smedja::Application::get().getWindow().getWidth() / 
+        projection = glm::perspective(glm::radians(45.0f),
+                                      (float)Smedja::Application::get().getWindow().getWidth() /
                                       (float)Smedja::Application::get().getWindow().getHeight(),
                                       0.1f, 100.0f);
 
-        // draw triangle!
-        m_shader->bind();
+        glm::vec3 lightPos(2.0f, 2.0f, 2.0f);
+        glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
+        m_cube->bind();
+
+        // TODO texture abstraction
+        m_texture1->bind(0);
+        m_shader->setUniform1i("uTexture1", 0);
+
+        glm::mat4 model = glm::rotate(glm::mat4(1.0), time + angle, axis);
+        m_shader->bind();
         m_shader->setUniformMat4x4("uView", m_cameraController.getCamera().getView());
         m_shader->setUniformMat4x4("uProjection", projection);
+        m_shader->setUniformMat4x4("uModel", model);
 
-        m_texture1->bind(0);
-        m_texture2->bind(1);
+        m_shader->setUniform3f("uLightPos", lightPos);
+        m_shader->setUniform3f("uLightColor", lightColor);
 
-        m_shader->setUniform1i("uTexture1", 0);
-        m_shader->setUniform1i("uTexture2", 1);
-        m_vertexArray->bind();
-        for(unsigned int i = 0; i < 10; i++)
-        {
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, cubePositions[i]);
-            float angle = 20.0f * i; 
-            model = glm::rotate(model, time + angle, axis);
-            m_shader->setUniformMat4x4("uModel", model);
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-            glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-        }
+        model = glm::translate(glm::mat4(1.0), lightPos);
+        model = glm::scale(model, glm::vec3(0.2f));
+
+        m_lightingShader->bind();
+        m_lightingShader->setUniformMat4x4("uView", m_cameraController.getCamera().getView());
+        m_lightingShader->setUniformMat4x4("uProjection", projection);
+        m_lightingShader->setUniformMat4x4("uModel", model);
+
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
     }
 
     void onEvent(Smedja::Event &e) override {
+        m_cameraController.onEvent(e);
     }
 
 private:
-    std::shared_ptr<Smedja::VertexArray> m_vertexArray;
+    std::shared_ptr<Smedja::VertexArray> m_cube;
     std::shared_ptr<Smedja::VertexBuffer> m_vertexBuffer;
     std::shared_ptr<Smedja::IndexBuffer> m_indexBuffer;
     std::shared_ptr<Smedja::Shader> m_shader;
+    std::shared_ptr<Smedja::Shader> m_lightingShader;
     std::shared_ptr<Smedja::Texture> m_texture1;
     std::shared_ptr<Smedja::Texture> m_texture2;
     Smedja::EuclideanCamera m_camera;

@@ -36,7 +36,7 @@ void ImGuiLayer::onDetach() {
     ImGui::DestroyContext();
 }
 
-void ImGuiLayer::onUpdate() {
+void ImGuiLayer::onUpdate(TimeStep &deltaTime) {
     ImGuiIO &io = ImGui::GetIO();
     Application &app = Application::get();
     io.DisplaySize = ImVec2((float)app.getWindow().getWidth(),
@@ -114,7 +114,6 @@ bool ImGuiLayer::onKeyReleasedEvent(KeyReleasedEvent &e) {
 bool ImGuiLayer::onCharTypedEvent(CharTypedEvent& e) {
     ImGuiIO &io = ImGui::GetIO();
     io.AddInputCharacter(e.getCodepoint());
-    SD_CORE_INFO("char typed! {0}", e);
     return true;
 }
 

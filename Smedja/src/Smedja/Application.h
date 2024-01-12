@@ -41,14 +41,7 @@ private:
     bool m_focused = true;
     LayerStack m_layerStack;
 
-
-    // temp
-    std::shared_ptr<VertexArray> m_vertexArray;
-    std::shared_ptr<VertexBuffer> m_vertexBuffer;
-    std::shared_ptr<IndexBuffer> m_indexBuffer;
-    std::shared_ptr<Shader> m_shader;
-    std::shared_ptr<Texture> m_texture1;
-    std::shared_ptr<Texture> m_texture2;
+    float m_lastFrameTime;
 };
 
 // To be defined in client

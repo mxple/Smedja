@@ -1,6 +1,9 @@
 #include "EuclideanCamera.h"
+#include "Smedja/Log.h"
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
+
+#include <glm/gtx/string_cast.hpp>
 
 namespace Smedja {
 
@@ -9,11 +12,9 @@ EuclideanCamera::EuclideanCamera(glm::vec3 pos, glm::vec3 front, glm::vec3 up)
     updateView();
 }
 
-EuclideanCamera::~EuclideanCamera() = default;
-
 void EuclideanCamera::updateView() {
     // Use m_pos + m_front to find center (aka object we are looking at).
-    glm::lookAt(m_pos, m_pos + m_front, m_up);
+    m_view = glm::lookAt(m_pos, m_pos + m_front, m_up);
 }
 
 void EuclideanCamera::setPerspective(float fov, float aspect, float near,
