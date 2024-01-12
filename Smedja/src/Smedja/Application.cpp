@@ -2,6 +2,7 @@
 
 #include <glad/glad.h>
 
+#include "Smedja/Core/Time.h"
 #include "Smedja/Input.h"
 #include "pch.h"
 
@@ -14,6 +15,8 @@ Application::Application() {
     s_instance = this;
     m_Window = std::unique_ptr<Window>(new Window());
     m_Window->setEventCallback(SD_BIND_EVENT_FN(Application::onEvent));
+
+    m_lastFrameTime = (float)glfwGetTime();
 }
 
 Application::~Application() {}
@@ -23,12 +26,21 @@ void Application::run() {
 
     while (m_Running) {
         if (m_focused) {
-            glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+            float time = (float)glfwGetTime();
+            TimeStep deltaTime = time - m_lastFrameTime;
+            m_lastFrameTime = time;
+            SD_CORE_TRACE("Delta time: {0} (milliseconds: {1})", 
+                          deltaTime.seconds(), deltaTime.milliseconds());
+
+            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             for (Layer *layer : m_layerStack) {
-                layer->onUpdate();
+                layer->onUpdate(deltaTime);
             }
+
+            time = (float)glfwGetTime() - time;
+            SD_CORE_TRACE("Time to update layers: {0} (fps: {1})", time, 1.0f / time);
         }
 
         m_Window->onUpdate();

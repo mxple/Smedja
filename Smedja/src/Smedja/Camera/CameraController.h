@@ -1,5 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
+#include "Smedja/Core/Time.h"
 #include "Smedja/Events/ApplicationEvent.h"
 #include "Smedja/Events/MouseEvent.h"
 
@@ -14,7 +15,7 @@ public:
 
     void onEvent(Event &e);
 
-    void onUpdate();
+    void onUpdate(TimeStep &deltaTime);
 
     Camera &getCamera() {
         return m_camera;
@@ -32,15 +33,15 @@ private:
     // Euclidean or Quat
     Camera &m_camera;
 
-    float m_yaw;
-    float m_pitch;
+    float m_yaw = -90.0f;
+    float m_pitch = 0.0f;
     // float m_roll;
 
     // Control variables
-    float m_sensitivity;
-    float m_moveSpeed;
-    float m_mouseXLast;
-    float m_mouseYLast;
+    float m_sensitivity = 0.1f;
+    float m_moveSpeed = 4.0f;
+    float m_mouseXLast = 0.0f;
+    float m_mouseYLast = 0.0f;
 };
 
 } // namespace Smedja

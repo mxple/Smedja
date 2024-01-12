@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Events/Event.h"
+#include "Smedja/Core/Time.h"
 #include "pch.h"
 
 namespace Smedja {
@@ -12,7 +13,7 @@ public:
 
     virtual void onAttach() {}
     virtual void onDetach() {}
-    virtual void onUpdate() {}
+    virtual void onUpdate(TimeStep &deltaTime) {}
     virtual void onEvent(Event &e) {}
 
     inline const std::string &getName() const {
