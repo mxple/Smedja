@@ -106,6 +106,7 @@ public:
 
         m_shader->setUniform3f("uLightPos", lightPos);
         m_shader->setUniform3f("uLightColor", lightColor);
+        m_shader->setUniform3f("uViewPos", m_cameraController.getCamera().getPos());
 
         glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
