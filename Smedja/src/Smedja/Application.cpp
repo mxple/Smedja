@@ -29,8 +29,6 @@ void Application::run() {
             float time = (float)glfwGetTime();
             TimeStep deltaTime = time - m_lastFrameTime;
             m_lastFrameTime = time;
-            SD_CORE_TRACE("Delta time: {0} (milliseconds: {1})", 
-                          deltaTime.seconds(), deltaTime.milliseconds());
 
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -38,9 +36,6 @@ void Application::run() {
             for (Layer *layer : m_layerStack) {
                 layer->onUpdate(deltaTime);
             }
-
-            time = (float)glfwGetTime() - time;
-            SD_CORE_TRACE("Time to update layers: {0} (fps: {1})", time, 1.0f / time);
         }
 
         m_Window->onUpdate();

@@ -75,7 +75,7 @@ public:
         glm::vec3 axis(1.0f, 0.0f, 0.0f);
 
         // Rotation angle based on time (adjust the speed as needed)
-        float rotationSpeed = 1.0f; // Adjust as needed
+        float rotationSpeed = .2f; // Adjust as needed
         float angle = rotationSpeed * time;
 
         // Create a rotation matrix using GLM
@@ -89,8 +89,8 @@ public:
                                       (float)Smedja::Application::get().getWindow().getHeight(),
                                       0.1f, 100.0f);
 
-        glm::vec3 lightPos(2.0f, 2.0f, 2.0f);
-        glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
+        glm::vec3 lightPos(sin(time) * 2.0f, 0.0f, cos(time) * 2.0f);
+        glm::vec3 lightColor(1.0f, 1.0f, 0.6f);
 
         m_cube->bind();
 
@@ -99,6 +99,8 @@ public:
         m_shader->setUniform1i("uTexture1", 0);
 
         glm::mat4 model = glm::rotate(glm::mat4(1.0), time + angle, axis);
+        // glm::mat4 model = glm::mat4(1.);
+
         m_shader->bind();
         m_shader->setUniformMat4x4("uView", m_cameraController.getCamera().getView());
         m_shader->setUniformMat4x4("uProjection", projection);
@@ -114,6 +116,7 @@ public:
         model = glm::scale(model, glm::vec3(0.2f));
 
         m_lightingShader->bind();
+        m_lightingShader->setUniform3f("uLightColor", lightColor);
         m_lightingShader->setUniformMat4x4("uView", m_cameraController.getCamera().getView());
         m_lightingShader->setUniformMat4x4("uProjection", projection);
         m_lightingShader->setUniformMat4x4("uModel", model);

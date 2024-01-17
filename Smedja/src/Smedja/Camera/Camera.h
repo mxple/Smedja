@@ -5,23 +5,22 @@
 namespace Smedja {
 
 // Virtual camera class, implementation left up to euclidean/quat camera.
-// Camera is responsible for managing and generating the view and projection
+// Camera is responsible for managing and generating the view and projection 
 // matracies, nothing else.
 // To control the camera and use it, see the CameraController class.
 class Camera {
     friend class CameraController;
-
 public:
-    Camera(glm::vec3 pos, glm::vec3 front, glm::vec3 up) :
+    Camera() = default;
+    Camera(glm::vec3 pos, glm::vec3 front, glm::vec3 up) : 
         m_pos(pos), m_front(front), m_up(up) {}
     ~Camera() = default;
 
     virtual void updateView() = 0;
 
-    virtual void setPerspective(float fov, float aspect, float near,
-                                float far) = 0;
+    virtual void setPerspective(float fov, float aspect, float near, float far);
     virtual void setOrthographic(float left, float right, float top,
-                                 float bottom, float near, float far) = 0;
+                                 float bottom, float near, float far);
 
     // getters
     glm::vec3 getPos() const { return m_pos; }
