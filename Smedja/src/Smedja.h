@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Smedja/Application.h"
-#include "Smedja/Layer.h"
-#include "Smedja/Log.h"
+#include "Smedja/Core/Application.h"
+#include "Smedja/Core/Layer.h"
+#include "Smedja/Core/Log.h"
 #include "Smedja/ImGui/ImGuiLayer.h"
 #include "Smedja/Camera/CameraController.h"
 
-#include "Smedja/EntryPoint.h"
+#include "Smedja/Core/EntryPoint.h"

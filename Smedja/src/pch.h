@@ -13,5 +13,5 @@
 
 #include <chrono>
 
-#include "Smedja/Log.h"
-#include "Smedja/Core.h"
+#include "Smedja/Core/Log.h"
+#include "Smedja/Core/Core.h"

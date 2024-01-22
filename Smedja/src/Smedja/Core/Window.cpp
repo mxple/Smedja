@@ -1,10 +1,10 @@
 #include <glad/glad.h>
 
 #include "Smedja/Events/CharTypedEvent.h"
-#include "Smedja/Input.h"
-#include "Window.h" // must be included after glad
+#include "Smedja/Core/Input.h"
+#include "Smedja/Core/Window.h" // must be included after glad
 
-#include "Application.h"
+#include "Smedja/Core/Application.h"
 #include "Smedja/Events/ApplicationEvent.h"
 #include "Smedja/Events/KeyEvent.h"
 #include "Smedja/Events/MouseEvent.h"

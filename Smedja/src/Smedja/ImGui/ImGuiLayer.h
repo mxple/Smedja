@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Smedja/Events/CharTypedEvent.h"
-#include "Smedja/Layer.h"
+#include "Smedja/Core/Layer.h"
 #include "Smedja/Events/ApplicationEvent.h"
 #include "Smedja/Events/KeyEvent.h"
 #include "Smedja/Events/MouseEvent.h"

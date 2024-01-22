@@ -1,7 +1,7 @@
-#include "ImGuiLayer.h"
-#include "Smedja/Application.h"
+#include "Smedja/ImGui/ImGuiLayer.h"
+#include "Smedja/Core/Application.h"
 
-#include "Smedja/KeyCodes.h"
+#include "Smedja/Core/KeyCodes.h"
 #include "backends/imgui_impl_opengl3.h"
 
 namespace Smedja {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Events/Event.h"
+#include "Smedja/Events/Event.h"
 #include "Smedja/Core/Time.h"
 #include "pch.h"
 

@@ -1,8 +1,7 @@
 #pragma once
 
-#include <vector>
-
-#include "Layer.h"
+#include "Smedja/Core/Layer.h"
+#include "pch.h"
 
 namespace Smedja {
 

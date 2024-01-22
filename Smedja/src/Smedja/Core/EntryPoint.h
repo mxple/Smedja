@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Application.h"
-#include "Log.h"
+#include "Smedja/Core/Application.h"
+#include "Smedja/Core/Log.h"
 
 extern Smedja::Application *Smedja::createApplication();
 

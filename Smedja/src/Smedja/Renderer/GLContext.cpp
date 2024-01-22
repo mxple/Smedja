@@ -10,8 +10,6 @@ void GLContext::init() {
     glfwMakeContextCurrent(m_windowHandle);
     int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
     SD_CORE_ASSERT(status, "Failed to initialize glad!");
-
-    glEnable(GL_DEPTH_TEST);  
 }
 
 void GLContext::swapBuffers() {

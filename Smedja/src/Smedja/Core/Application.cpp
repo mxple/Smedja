@@ -3,7 +3,7 @@
 #include <glad/glad.h>
 
 #include "Smedja/Core/Time.h"
-#include "Smedja/Input.h"
+#include "Smedja/Core/Input.h"
 #include "pch.h"
 
 namespace Smedja {
@@ -29,9 +29,6 @@ void Application::run() {
             float time = (float)glfwGetTime();
             TimeStep deltaTime = time - m_lastFrameTime;
             m_lastFrameTime = time;
-
-            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             for (Layer *layer : m_layerStack) {
                 layer->onUpdate(deltaTime);
