@@ -7,6 +7,7 @@ namespace Smedja {
 class VertexBuffer {
 public:
     VertexBuffer(float *vertices, unsigned int size);
+    VertexBuffer(unsigned int size);
     ~VertexBuffer();
 
     void setData(float *vertices, unsigned int size);

@@ -4,6 +4,7 @@
 
 #include "Smedja/Core/Time.h"
 #include "Smedja/Core/Input.h"
+#include "Smedja/Renderer/RenderCommand.h"
 #include "pch.h"
 
 namespace Smedja {
@@ -29,6 +30,9 @@ void Application::run() {
             float time = (float)glfwGetTime();
             TimeStep deltaTime = time - m_lastFrameTime;
             m_lastFrameTime = time;
+
+            RenderCommand::setClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+            RenderCommand::clear();
 
             for (Layer *layer : m_layerStack) {
                 layer->onUpdate(deltaTime);

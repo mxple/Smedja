@@ -1,7 +1,7 @@
 #include "CameraController.h"
-#include "Smedja/Input.h"
-#include "Smedja/KeyCodes.h"
-#include "Smedja/MouseCodes.h"
+#include "Smedja/Core/Input.h"
+#include "Smedja/Core/KeyCodes.h"
+#include "Smedja/Core/MouseCodes.h"
 
 namespace Smedja {
 

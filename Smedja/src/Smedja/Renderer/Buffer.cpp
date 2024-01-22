@@ -8,6 +8,12 @@ VertexBuffer::VertexBuffer(float *vertices, unsigned int size) {
     glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 }
 
+VertexBuffer::VertexBuffer(unsigned int size) {
+    glGenBuffers(1, &m_ID);
+    glBindBuffer(GL_ARRAY_BUFFER, m_ID);
+    glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
+}
+
 VertexBuffer::~VertexBuffer() {
     glDeleteBuffers(1, &m_ID);
 }

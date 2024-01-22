@@ -21,7 +21,6 @@ public:
     // uniforms
     // see https://registry.khronos.org/OpenGL-Refpages/gl4/html/glUniform.xhtml
     void setUniform1f(const std::string &name, float v0);
-
     void setUniform2f(const std::string &name, float v0, float v1);
 
     void setUniform3f(const std::string &name, float v0, float v1, float v2);
