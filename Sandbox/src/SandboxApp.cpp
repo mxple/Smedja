@@ -4,12 +4,13 @@
 #include <glm/gtx/string_cast.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "TestLayer.h"
+#include "TestLayer2D.h"
 
 class Sandbox : public Smedja::Application {
 public:
     Sandbox() {
-        pushLayer(new TestLayer());
+        // pushLayer(new TestLayer());
+        pushLayer(new TestLayer2D());
         pushOverlay(new Smedja::ImGuiLayer());
     }
 
