@@ -7,6 +7,13 @@
 
 namespace Smedja {
 
+Texture::Texture() {
+    glGenTextures(1, &m_ID);
+    glBindTexture(GL_TEXTURE_2D, m_ID);
+
+    // set params here if wanted
+}
+
 // TODO support different formats and outputs
 Texture::Texture(const std::string &path, GLenum textureFormat) {
     glGenTextures(1, &m_ID);
@@ -14,7 +21,7 @@ Texture::Texture(const std::string &path, GLenum textureFormat) {
 
     // set params here if wanted
 
-    stbi_set_flip_vertically_on_load(true);  
+    stbi_set_flip_vertically_on_load(true);
     int width, height, nrChannels;
     unsigned char *data =
         stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
@@ -24,8 +31,7 @@ Texture::Texture(const std::string &path, GLenum textureFormat) {
         glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, width, height, 0,
                      imageFormat, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else {
+    } else {
         SD_CORE_WARN("Failed to load texture: {0}", path);
     }
 
@@ -34,6 +40,32 @@ Texture::Texture(const std::string &path, GLenum textureFormat) {
 
 Texture::~Texture() {
     glDeleteTextures(1, &m_ID);
+}
+
+void Texture::setData(const std::string &path, GLenum textureFormat) {
+    stbi_set_flip_vertically_on_load(true);
+    int width, height, nrChannels;
+    unsigned char *data =
+        stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
+
+    if (data) {
+        GLenum imageFormat = nrChannels == 3 ? GL_RGB : GL_RGBA;
+        glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, width, height, 0,
+                     imageFormat, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    } else {
+        SD_CORE_WARN("Failed to load texture: {0}", path);
+    }
+
+    stbi_image_free(data);
+}
+
+void Texture::setData(unsigned char *data, int width, int height,
+                      GLenum textureFormat) {
+    GLenum imageFormat = textureFormat == GL_RGB ? GL_RGB : GL_RGBA;
+    glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, width, height, 0, imageFormat,
+                 GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
 }
 
 void Texture::bind(unsigned int textureUnit) {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <glad/glad.h>
 #include "pch.h"
+#include <glad/glad.h>
 
 namespace Smedja {
 
@@ -9,8 +9,13 @@ namespace Smedja {
 // Currently only officially suports jpg and png (3-4 color channel rgb/rgba)
 class Texture {
 public:
-    Texture(const std::string& path, GLenum textureFormat = GL_RGB);
+    Texture();
+    Texture(const std::string &path, GLenum textureFormat = GL_RGB);
     ~Texture();
+
+    void setData(const std::string &path, GLenum textureFormat = GL_RGB);
+    void setData(unsigned char *data, int width, int height,
+                 GLenum textureFormat = GL_RGB);
 
     void bind(unsigned int textureUnit = 0);
     void unbind();

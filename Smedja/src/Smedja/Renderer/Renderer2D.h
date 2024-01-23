@@ -7,8 +7,12 @@ namespace Smedja {
 
 class Renderer2D {
 public:
-    // 
     static void init();
+
+    static void beginScene();
+    static void endScene();
+
+    static void flush();
 
     // primitives
     static void drawQuad();
@@ -24,18 +28,20 @@ private:
 
     const static int maxQuads = 10000;
     const static int maxVertices = maxQuads * 4;
-    const static int maxIndicies = maxQuads * 6;
+    const static int maxIndices = maxQuads * 6;
     
     static std::shared_ptr<VertexArray> s_vao;
     static std::shared_ptr<VertexBuffer> s_vbo;
 
-    static std::shared_ptr<Shader> s_textureShader;
-    static std::shared_ptr<Shader> s_colorShader;
-
     static std::shared_ptr<Texture> s_whiteTexture;
 
-    static QuadVertex *s_vertexBufferBase;
-    static QuadVertex *s_vertexBufferPtr;
+    static std::shared_ptr<Shader> s_textureShader;
+    // static std::shared_ptr<Shader> s_colorShader;
+
+    static QuadVertex *s_quadVertexBufferBase;
+    static QuadVertex *s_quadVertexBufferPtr;
+
+    static int s_quadIndexCount;
 };
 
 } // namespace Smedja
