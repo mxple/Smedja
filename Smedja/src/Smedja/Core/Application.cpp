@@ -5,6 +5,7 @@
 #include "Smedja/Core/Time.h"
 #include "Smedja/Core/Input.h"
 #include "Smedja/Renderer/RenderCommand.h"
+#include "Smedja/Renderer/Renderer2D.h"
 #include "pch.h"
 
 namespace Smedja {
@@ -24,6 +25,7 @@ Application::~Application() {}
 
 void Application::run() {
     SD_CORE_INFO("Ready to run!");
+    Renderer2D::init();
 
     while (m_Running) {
         if (m_focused) {
@@ -37,6 +39,8 @@ void Application::run() {
             for (Layer *layer : m_layerStack) {
                 layer->onUpdate(deltaTime);
             }
+
+            SD_CORE_TRACE("Frame time: {0}", glfwGetTime() - time);
         }
 
         m_Window->onUpdate();

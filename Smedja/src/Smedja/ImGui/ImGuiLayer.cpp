@@ -44,9 +44,9 @@ void ImGuiLayer::onUpdate(TimeStep &deltaTime) {
 
     ImGui_ImplOpenGL3_NewFrame();
     ImGui::NewFrame();
-
-    static bool show = true;
-    ImGui::ShowDemoWindow(&show);
+    
+    // static bool show = false;
+    // ImGui::ShowDemoWindow(&show);
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

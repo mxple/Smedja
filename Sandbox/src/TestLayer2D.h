@@ -12,14 +12,11 @@ public:
 
         Smedja::Renderer2D::beginScene();
 
-        Smedja::Renderer2D::drawQuadExt(0.0f, 0.0f, 1.0f, 1.0f, 0.0f,
-                                        {0.2f, 0.3f, 0.8f, 1.0f});
-        // Smedja::Renderer2D::drawQuadExt(0.5f, -0.5f, 1.0f, 1.0f, 0.0f,
-        //                                 {0.8f, 0.3f, 0.2f, 1.0f});
-        // Smedja::Renderer2D::drawQuadExt(-0.5f, -0.5f, 1.0f, 1.0f, 0.0f,
-        //                                 {0.2f, 0.8f, 0.3f, 1.0f});
-        // Smedja::Renderer2D::drawQuadExt(-0.5f, 0.5f, 1.0f, 1.0f, 0.0f,
-        //                                 {0.8f, 0.2f, 0.3f, 1.0f});
+        // takes ~10ms to render 100000 quads
+        // for (int i = 0; i < 100000; i++) {
+        //     Smedja::Renderer2D::drawQuadExt({i * 0.001f, 0.0f, 0.0f}, {0.01f, 0.01f});
+        // }
+
 
         Smedja::Renderer2D::endScene();
     }
