@@ -54,7 +54,7 @@ public:
 
         m_shader.reset(new Smedja::Shader("data/shaders/default.vert", "data/shaders/lightTarget.frag"));
         m_lightingShader.reset(new Smedja::Shader("data/shaders/default.vert", "data/shaders/lightCube.frag"));
-        m_texture1.reset(new Smedja::Texture("data/metal_crate.png"));
+        m_texture1.reset(new Smedja::GLTexture("data/metal_crate.png"));
 
         m_cube.reset(new Smedja::VertexArray());
         m_vertexBuffer.reset(new Smedja::VertexBuffer(vertices, sizeof(vertices)));
@@ -133,8 +133,8 @@ private:
     std::shared_ptr<Smedja::IndexBuffer> m_indexBuffer;
     std::shared_ptr<Smedja::Shader> m_shader;
     std::shared_ptr<Smedja::Shader> m_lightingShader;
-    std::shared_ptr<Smedja::Texture> m_texture1;
-    std::shared_ptr<Smedja::Texture> m_texture2;
+    std::shared_ptr<Smedja::GLTexture> m_texture1;
+    std::shared_ptr<Smedja::GLTexture> m_texture2;
     Smedja::EuclideanCamera m_camera;
     Smedja::CameraController m_cameraController;
 };

@@ -3,10 +3,6 @@
 #include "Smedja/Events/ApplicationEvent.h"
 #include "Smedja/Events/Event.h"
 #include "Smedja/Core/LayerStack.h"
-#include "Smedja/Renderer/Buffer.h"
-#include "Smedja/Renderer/Shader.h"
-#include "Smedja/Renderer/Texture.h"
-#include "Smedja/Renderer/VertexArray.h"
 #include "Smedja/Core/Window.h"
 
 namespace Smedja {

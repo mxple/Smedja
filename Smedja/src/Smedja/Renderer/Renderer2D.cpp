@@ -13,7 +13,7 @@ void Renderer2D::init() {
     // Create vertex array
     Renderer2D::s_vao = std::make_shared<VertexArray>();
 
-    // Create index buffer 
+    // Create index buffer
     unsigned int *indices = new unsigned int[Renderer2D::maxQuads * 6];
     unsigned int offset = 0;
     for (int i = 0; i < Renderer2D::maxQuads * 6; i += 6) {
@@ -39,7 +39,7 @@ void Renderer2D::init() {
         "data/shaders/texture.vert", "data/shaders/texture.frag");
 
     // Create texture
-    Renderer2D::s_whiteTexture = std::make_shared<Texture>();
+    Renderer2D::s_whiteTexture = std::make_shared<GLTexture>();
     unsigned int whiteTextureData = 0xffffffff;
     Renderer2D::s_whiteTexture->setData((unsigned char *)&whiteTextureData, 1,
                                         1, GL_RGBA);
@@ -81,7 +81,7 @@ void Renderer2D::flush() {
 
 void Renderer2D::drawQuadExt(const glm::vec3 &position, const glm::vec2 &size,
                              const float rotation, const glm::vec4 &color,
-                             const std::shared_ptr<Texture> &texture,
+                             const std::shared_ptr<GLTexture> &texture,
                              const glm::vec2 &texCoord1,
                              const glm::vec2 &texCoord2) {
     if (s_quads.size() >= Renderer2D::maxQuads) {
@@ -90,14 +90,13 @@ void Renderer2D::drawQuadExt(const glm::vec3 &position, const glm::vec2 &size,
     }
     // TODO: implement texture atlas, translate texcoords to atlas coords
 
-    QuadData quadData;
-    quadData.position_rotation = {position, rotation};
-    quadData.size_origin = {size, 0, 0};
-    quadData.tintCol = color;
-    quadData.texCoord1 = texCoord1;
-    quadData.texCoord2 = texCoord2;
-
-    s_quads.push_back(std::move(quadData)); // TODO: check move work
+    s_quads.emplace_back(
+        glm::vec4{position, rotation},
+        glm::vec4{size, 0, 0},
+        color,
+        texCoord1,
+        texCoord2
+    );
 }
 
 } // namespace Smedja

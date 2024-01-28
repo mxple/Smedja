@@ -1,4 +1,4 @@
-#include "Texture.h"
+#include "GLTexture.h"
 #ifdef DEBUG
 #define STBI_NO_SIMD
 #endif
@@ -7,7 +7,7 @@
 
 namespace Smedja {
 
-Texture::Texture() {
+GLTexture::GLTexture() {
     glGenTextures(1, &m_ID);
     glBindTexture(GL_TEXTURE_2D, m_ID);
 
@@ -15,7 +15,7 @@ Texture::Texture() {
 }
 
 // TODO support different formats and outputs
-Texture::Texture(const std::string &path, GLenum textureFormat) {
+GLTexture::GLTexture(const std::string &path, GLenum textureFormat) {
     glGenTextures(1, &m_ID);
     glBindTexture(GL_TEXTURE_2D, m_ID);
 
@@ -38,11 +38,11 @@ Texture::Texture(const std::string &path, GLenum textureFormat) {
     stbi_image_free(data);
 }
 
-Texture::~Texture() {
+GLTexture::~GLTexture() {
     glDeleteTextures(1, &m_ID);
 }
 
-void Texture::setData(const std::string &path, GLenum textureFormat) {
+void GLTexture::setData(const std::string &path, GLenum textureFormat) {
     stbi_set_flip_vertically_on_load(true);
     int width, height, nrChannels;
     unsigned char *data =
@@ -60,7 +60,7 @@ void Texture::setData(const std::string &path, GLenum textureFormat) {
     stbi_image_free(data);
 }
 
-void Texture::setData(unsigned char *data, int width, int height,
+void GLTexture::setData(unsigned char *data, int width, int height,
                       GLenum textureFormat) {
     GLenum imageFormat = textureFormat == GL_RGB ? GL_RGB : GL_RGBA;
     glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, width, height, 0, imageFormat,
@@ -68,16 +68,16 @@ void Texture::setData(unsigned char *data, int width, int height,
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 
-void Texture::bind(unsigned int textureUnit) {
+void GLTexture::bind(unsigned int textureUnit) {
     glActiveTexture(GL_TEXTURE0 + textureUnit);
     glBindTexture(GL_TEXTURE_2D, m_ID);
 }
 
-void Texture::unbind() {
+void GLTexture::unbind() {
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Texture::setParam(GLenum name, GLenum value) {
+void GLTexture::setParam(GLenum name, GLenum value) {
     // pretty sure this is necessary, maybe do testing later
     glBindTexture(GL_TEXTURE_2D, m_ID);
     glTexParameteri(GL_TEXTURE_2D, name, value);

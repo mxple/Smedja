@@ -7,11 +7,11 @@ namespace Smedja {
 
 // Texture is wrapper for opengl texture, not rgb data
 // Currently only officially suports jpg and png (3-4 color channel rgb/rgba)
-class Texture {
+class GLTexture {
 public:
-    Texture();
-    Texture(const std::string &path, GLenum textureFormat = GL_RGB);
-    ~Texture();
+    GLTexture();
+    GLTexture(const std::string &path, GLenum textureFormat = GL_RGB);
+    ~GLTexture();
 
     void setData(const std::string &path, GLenum textureFormat = GL_RGB);
     void setData(unsigned char *data, int width, int height,

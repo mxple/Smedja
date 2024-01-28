@@ -3,7 +3,6 @@
 #include <glad/glad.h>
 
 #include "Smedja/Core/Time.h"
-#include "Smedja/Core/Input.h"
 #include "Smedja/Renderer/RenderCommand.h"
 #include "Smedja/Renderer/Renderer2D.h"
 #include "pch.h"

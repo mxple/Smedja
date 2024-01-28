@@ -24,6 +24,7 @@ void VertexBuffer::setData(float *vertices, unsigned int size) {
 }
 
 void VertexBuffer::setLayout(BufferLayout &layout) {
+    // TODO: write an emplace function?
     m_layout = std::move(layout);
 }
 
