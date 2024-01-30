@@ -24,17 +24,23 @@ void ResourceManager::reload() {
     std::vector<RectPacker::Rect<std::string_view>> rects;
     for (const auto &[name, sprite] : m_sprites) {
         // skip sprites without textures
-        if (m_spriteToTextureMap.find(name) == m_spriteToTextureMap.end()) {
+        auto it = m_spriteToTextureMap.find(name);
+        if (it == m_spriteToTextureMap.end()) {
             continue;
         }
-        rects.emplace_back(0, 0, sprite.size().x, sprite.size().y);
+        Texture &texture = m_textures[it->second];
+        rects.emplace_back(0, 0, texture.width(), texture.height());
         rects.back().sprite = name;
     }
 
+    SD_CORE_INFO("ResourceManager::reload: Packing {} sprites", rects.size());
     std::pair<int, int> dims = RectPacker::pack(rects);
 
     SD_CORE_ASSERT(dims.first != -1 && dims.second != -1,
                    "ResourceManager::reload: Packing failed");
+
+    SD_CORE_INFO("ResourceManager::reload: Packed {} sprites into {}x{} atlas",
+                 rects.size(), dims.first, dims.second);
 
     // TextureAtlas &atlas = m_textureAtlases.emplace_back();
     TextureAtlas atlas;
@@ -58,6 +64,9 @@ void ResourceManager::reload() {
         sprite.setTextureAtlas(atlasGLTexture);
     }
 
+    atlasGLTexture->setData(atlas.data(), atlas.width(), atlas.height(),
+                            atlas.channels());
+                                 
     // TODO: decide whether to free data
     // atlas goes out of scope here, data is deleted (?)
 }

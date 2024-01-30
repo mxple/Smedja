@@ -56,9 +56,10 @@ void GLTexture::setData(const std::string &path, GLenum textureFormat) {
     stbi_image_free(data);
 }
 
-void GLTexture::setData(unsigned char *data, int width, int height,
-                      GLenum textureFormat) {
-    GLenum imageFormat = textureFormat == GL_RGB ? GL_RGB : GL_RGBA;
+void GLTexture::setData(const unsigned char *data, int width, int height,
+                      int channels) {
+    GLenum textureFormat = channels == 3 ? GL_RGB : GL_RGBA;
+    GLenum imageFormat = channels == 3 ? GL_RGB : GL_RGBA;
     glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, width, height, 0, imageFormat,
                  GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);

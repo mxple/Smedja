@@ -4,6 +4,7 @@
 #include <glm/gtx/string_cast.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "TestLayer.h"
 #include "TestLayer2D.h"
 
 class Sandbox : public Smedja::Application {

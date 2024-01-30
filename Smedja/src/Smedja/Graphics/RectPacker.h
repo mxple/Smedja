@@ -74,6 +74,8 @@ inline static bool pack(std::vector<Rect<T>> &rects,
         rectangle.h += padding;
 
         while (true) {
+            SD_CORE_INFO("rectangle: {}, {}, {}, {}", rectangle.x, rectangle.y,
+                         rectangle.w, rectangle.h);
             if (it == emptySpaces.rend()) {
                 rectangle.w -= padding;
                 rectangle.h -= padding;
@@ -124,6 +126,7 @@ inline static bool pack(std::vector<Rect<T>> &rects,
                                              rectangle.h);
                     }
                 }
+                break;
             }
             /*      _________________LW______
                     |         |             |
@@ -149,6 +152,7 @@ inline static bool pack(std::vector<Rect<T>> &rects,
                                             leftoverH);
                     }
                 }
+                break;
             }
         }   // end while
         rectangle.w -= padding;

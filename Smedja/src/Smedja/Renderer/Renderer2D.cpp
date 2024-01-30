@@ -84,6 +84,7 @@ void Renderer2D::drawSprite(Sprite &sprite, const glm::vec3 &position,
                             const glm::vec4 &color) {
     // bind textur
     if (s_currBoundTexture != sprite.textureAtlas()->id()) {
+        SD_CORE_INFO("Renderer2D::drawSprite: Binding texture");
         endScene();
         beginScene();   
         sprite.textureAtlas()->bind();

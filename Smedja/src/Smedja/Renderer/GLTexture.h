@@ -14,8 +14,8 @@ public:
     ~GLTexture();
 
     void setData(const std::string &path, GLenum textureFormat = GL_RGB);
-    void setData(unsigned char *data, int width, int height,
-                 GLenum textureFormat = GL_RGB);
+    void setData(const unsigned char *data, int width, int height,
+                 int channels);
 
     void bind(unsigned int textureUnit = 0);
     void unbind();
