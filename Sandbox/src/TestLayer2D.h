@@ -17,6 +17,11 @@ public:
         //     Smedja::Renderer2D::drawQuadExt({i * 0.001f, 0.0f, 0.0f}, {0.01f, 0.01f});
         // }
 
+        Smedja::ResourceManager::addTexture("t_metal_crate", "data/metal_crate.png");
+        Smedja::ResourceManager::createSprite("s_metal_crate", "t_metal_crate");
+        Smedja::ResourceManager::reload();
+
+        Smedja::Renderer2D::drawSprite(Smedja::ResourceManager::getSprite("s_metal_crate"), {0.0f, 0.0f, 0.0f}, {0.5f, 0.5f});
 
         Smedja::Renderer2D::endScene();
     }

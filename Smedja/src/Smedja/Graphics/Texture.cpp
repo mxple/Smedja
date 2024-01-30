@@ -14,6 +14,7 @@ Texture::~Texture() {
     if (m_data) {
         stbi_image_free(m_data);
     }
+    SD_CORE_TRACE("Texture destroyed");
 }
 
 Texture::Texture(const Texture& other) : 
@@ -37,64 +38,19 @@ void Texture::loadFromPath(const std::string &path, int reqChan) {
 // Probably should never be used since if we already have the texture in memory,
 // we can either use that texture or memcpy from it. Only use case of this would
 // be if we wanted to change the number of channels, ie convert formats.
-void Texture::loadFromData(const unsigned char *data, int width, int height,
+void Texture::loadFromData(unsigned char *data, int width, int height,
                            int channels, int reqChan) {
     if (m_data) {
         stbi_image_free(m_data);
     }
 
-    m_data = stbi_load_from_memory(data, width * height * channels, &m_width,
-                                   &m_height, &m_channels, reqChan);
-}
+    m_data = data;
+    m_width = width;
+    m_height = height;
+    m_channels = channels;
 
-// OPTIMIZE: SIMD
-// Realistically should only be used with texture atlases
-void Texture::subImage(Texture &other, int x, int y) {
-	SD_CORE_ASSERT(m_channels == 4, "Texture::subImage: Only RGBA8 supported");
-
-	int copyWidth = other.m_width;
-	int copyHeight = other.m_height;
-
-	// Check if size fits, if not, squeeze as much of it as it fits and warn.
-	// TODO: Check for off-by-one errors
-	if (x + copyWidth > m_width || y + copyHeight > m_height) {
-		SD_CORE_WARN("Texture::subImage: Subimage does not fit in texture");
-		copyWidth = m_width - x;
-		copyHeight = m_height - y;
-	}
-	
-	unsigned char *sourcePtr = other.m_data;
-	unsigned char *destPtr = m_data + (y * m_width + x) * m_channels;
-
-	// Check channels. Internally we use RGBA8, so if the other texture has
-	// fewer channels, we need to copy it pixel by pixel.
-	if (other.m_channels < m_channels) {
-		for (int i = 0; i < copyHeight; i++) {
-			for (int j = 0; j < copyWidth; j++) {
-				// TODO: Unroll this loop if necessary, or use memcpy
-				for (int k = 0; k < other.m_channels; k++) {
-					*destPtr = *sourcePtr;
-					destPtr++; sourcePtr++;
-				}
-				destPtr += m_channels - other.m_channels - 1;
-				*destPtr = 255;	// Alpha
-				destPtr++;
-			}
-			sourcePtr += (other.m_width - copyWidth) * other.m_channels;
-			destPtr += (m_width - copyWidth) * m_channels;
-		}
-	}
-	else if (other.m_channels == m_channels) {
-		// Copy data into m_data line by line
-		for (int i = 0; i < other.m_height; i++) {
-			memcpy(sourcePtr, destPtr, copyWidth * m_channels);
-			sourcePtr += (other.m_width - copyWidth) * other.m_channels;
-			destPtr += (m_width - copyWidth) * m_channels;
-		}
-	}
-	else {
-		SD_CORE_WARN("Texture::subImage: Subimage has more than 4 channels");
-	}
+    // m_data = stbi_load_from_memory(data, width * height * channels, &m_width,
+    //                                &m_height, &m_channels, reqChan);
 }
 
 const unsigned char *Texture::data() const {
@@ -107,6 +63,10 @@ int Texture::width() const {
 
 int Texture::height() const {
     return m_height;
+}
+
+int Texture::channels() const {
+    return m_channels;
 }
 
 } // namespace Smedja

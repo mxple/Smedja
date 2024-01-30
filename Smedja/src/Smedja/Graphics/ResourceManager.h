@@ -1,44 +1,73 @@
+/**
+ * @file    ResourceManager.h
+ * @brief   ResourceManager class
+ */
+
 #pragma once
+#include "Smedja/Graphics/RectPacker.h"
+#include "Smedja/Graphics/Sprite.h"
 #include "Smedja/Graphics/Texture.h"
+#include "Smedja/Graphics/TextureAtlas.h"
+#include <glm/glm.hpp>
+
+#include "pch.h"
 
 namespace Smedja {
 
-// ResourceManager class responsible for pointing sprites to the correct texture
-// atlas and managing texcoords of each sprite.
+/**
+ * @class ResourceManager
+ * @brief ResourceManager is responsible for loading textures and creating
+ *        sprites.
+ *
+ * ResourceManager is a singleton class. Sprites are created, managed, and
+ * destroyed by the ResourceManager. The ResourceManager also holds textures
+ * and texture atlases. It is responsible for gracefully reloading texture
+ * atlases when textures are added or removed or when requested.
+ *
+ * @note Will eventually replace strings with UUID after implementing editor
+ */
 class ResourceManager {
 public:
-    ResourceManager();
-    ~ResourceManager();
+    /**
+     * @brief Returns the singleton instance of ResourceManager.
+     */
+    // static ResourceManager &instance();
 
-    // reloads texture atlases, points sprites to the correct texture atlas, and
-    // passes data to gpu
-    void reload();
+    /**
+     * @brief Reloads texture atlases from held textures and sets sprites
+     *        accordingly.
+     */
+    static void reload();
 
-    void addTexture(const std::string &name, const std::string &path);
+    static void addTexture(const std::string_view name,
+                           const std::string &path);
 
-    const std::shared_ptr<Texture> &texture() const;
+    static void createSprite(const std::string_view name,
+                             const std::string_view texture);
+    static void createSprite(const std::string_view name);
+
+    static void setSpriteTexture(const std::string_view spriteName,
+                                 const std::string_view textureName);
+
+    static void removeSprite(const std::string_view name);
+
+    static void removeTexture(const std::string_view name);
+
+    static Sprite &getSprite(const std::string_view name);
+
+    static Texture &getTexture(const std::string_view name);
 
 private:
-    struct Rect {
-        int x;
-        int y;
-        int width;
-        int height;
-        bool rotated;
-    };
+    ResourceManager() = delete;
+    // ResourceManager(const ResourceManager &);
+    // ResourceManager operator=(const ResourceManager &);
 
-    std::shared_ptr<Texture> m_textureAtlas;
-
-
+private:
+    static inline std::unordered_map<std::string_view, Texture> m_textures;
+    static inline std::unordered_map<std::string_view, Sprite> m_sprites;
+    static inline std::unordered_map<std::string_view, std::string_view>
+        m_spriteToTextureMap;
+    // std::vector<TextureAtlas> m_textureAtlases;
 };
 
 } // namespace Smedja
-
-
-/*
-
-    Rectangle packer:
-    Takes in a list of rectangle structs that represent a sprite.
-
-
-*/

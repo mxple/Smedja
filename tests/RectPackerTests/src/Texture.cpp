@@ -60,6 +60,7 @@ void Texture::subImage(Texture &other, int x, int y) {
     // Check if size fits, if not, squeeze as much of it as it fits and warn.
     // TODO: Check for off-by-one errors
     if (x + copyWidth > m_width || y + copyHeight > m_height) {
+        std::cerr << x << " " << y << " " << copyWidth << " " << copyHeight << std::endl;
         copyWidth = m_width - x;
         copyHeight = m_height - y;
     }

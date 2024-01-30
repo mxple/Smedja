@@ -13,6 +13,7 @@ project "RectPackerTest"
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"
+    symbols "On"
 
     targetdir ("%{wks.location}/bin")
     objdir ("%{wks.location}/obj")

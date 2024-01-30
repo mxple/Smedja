@@ -38,8 +38,6 @@ void Application::run() {
             for (Layer *layer : m_layerStack) {
                 layer->onUpdate(deltaTime);
             }
-
-            SD_CORE_TRACE("Frame time: {0}", glfwGetTime() - time);
         }
 
         m_Window->onUpdate();

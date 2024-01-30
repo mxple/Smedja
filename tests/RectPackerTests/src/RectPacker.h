@@ -17,8 +17,6 @@
 
 namespace RectPacker {
 
-enum class Orientation { square = 0, landscape, portrait };
-
 /**
  * @class Rect
  * @brief A rectangle with an x, y, width, height, and a flag for rotation
@@ -37,42 +35,8 @@ struct Rect {
 
     int area() const { return w * h; }
     int perimeter() const { return 2 * (w + h); }
-    Orientation orientation() {
-        if (w > h) {
-            return Orientation::landscape;
-        }
-        else if (h > w) {
-            return Orientation::portrait;
-        }
-        return Orientation::square;
-    }
+
 };
-
-// Determines whether to use landscape or portrait
-inline Orientation determineOrientation(const std::vector<Rect> &rects) {
-    return Orientation::landscape;
-}
-
-// Flips rectangles that need flipping based on orientation parameter
-inline void flipRects(std::vector<Rect> &rects, Orientation orientation) {
-    assert(orientation != Orientation::square);
-    if (orientation == Orientation::landscape) {
-        for (Rect &rectangle : rects) {
-            if (rectangle.orientation() == Orientation::portrait) {
-                std::swap(rectangle.w, rectangle.h);
-                rectangle.rotated = true;
-            }
-        }
-    }
-    else {
-        for (Rect &rectangle : rects) {
-            if (rectangle.orientation() == Orientation::landscape) {
-                std::swap(rectangle.w, rectangle.h);
-                rectangle.rotated = true;
-            }
-        }
-    }
-}
 
 struct RectXYWH {
     int x, y, w, h;
@@ -92,32 +56,28 @@ struct RectXYWH {
  * @param discardFactor The cutoff point for discarding empty spaces
  * @return              True if packing was successful, false otherwise
  */
-inline bool pack(std::vector<Rect> &rects, int binMaxW, int binMaxH, int padding = 0, int discardFactor = 0) {
-    std::vector<RectXYWH> emptySpaces;
-    emptySpaces.reserve(rects.size() + 1);
-    emptySpaces.emplace_back(0, 0, binMaxW, binMaxH);
 
-    std::sort(rects.begin(), rects.end(),
-              [](Rect a, Rect b) { return a.perimeter() > b.perimeter(); });
-    // TODO: technically, it is more efficient to have two discard factors,
-    //       one for width and one for height
-    discardFactor =
-        std::max(discardFactor, std::min(rects.back().w, rects.back().h));
+inline bool pack(std::vector<Rect> &rects, std::vector<RectXYWH> &emptySpaces, int binMaxW, int binMaxH, int padding = 0, int discardFactor = 0) {
+    emptySpaces.clear();
+    emptySpaces.emplace_back(0, 0, binMaxW, binMaxH);
 
     for (Rect &rectangle: rects) {
         std::vector<RectXYWH>::reverse_iterator it = emptySpaces.rbegin();
+        rectangle.w += padding;
+        rectangle.h += padding;
 
-        while (!emptySpaces.empty()) {
+        while (true) {
             if (it == emptySpaces.rend()) {
-                // no more empty spaces to check
+                rectangle.w -= padding;
+                rectangle.h -= padding;
                 return false;
             }
 
             RectXYWH candidate = *it;
 
             // if rectangle is too big for empty space, skip to next empty space
-            if (candidate.w < rectangle.w + padding ||
-                candidate.h < rectangle.h + padding) {
+            if (candidate.w < rectangle.w ||
+                candidate.h < rectangle.h) {
                 it++;
                 continue;
             }
@@ -128,115 +88,24 @@ inline bool pack(std::vector<Rect> &rects, int binMaxW, int binMaxH, int padding
             std::iter_swap(it, emptySpaces.rbegin());
             emptySpaces.pop_back();
 
-            int leftoverW = candidate.w - rectangle.w - padding;
-            int leftoverH = candidate.h - rectangle.h - padding;
+            int leftoverW = candidate.w - rectangle.w;
+            int leftoverH = candidate.h - rectangle.h;
 
-            /*      _____________________LW__
-                    |                  |    |
-                    |   rectangle      |  S |
-                    |__________________|____|
-                    |                       |
-                    |                       |
-                LH  |           L           |
-                    |_______________________|       */
-            if (leftoverW <= leftoverH) {
+            if (leftoverW < leftoverH) {
                  // Check if space(s) is too small to be added
                 if (leftoverH >= discardFactor) {
                     emptySpaces.emplace_back(
                                         candidate.x,
-                                        candidate.y + rectangle.h + padding,
+                                        candidate.y + rectangle.h,
                                         candidate.w,
-                                        candidate.h - rectangle.h - padding);
+                                        leftoverH);
 
                     if (leftoverW >= discardFactor) {
                         emptySpaces.emplace_back(
-                                             candidate.x + rectangle.w + padding,
-                                             candidate.y,
-                                             candidate.w - rectangle.w - padding,
-                                             rectangle.h + padding);
-                    }
-                }
-                break;
-            }
-            /*      _________________LW______
-                    |         |             |
-                    |         |             |
-                    |rectangle|             |
-                    |         |      L      |
-                    |_________|             |
-                LH  |    S    |             |
-                    |_________|_____________|       */
-            else {
-                if (leftoverW > discardFactor) {
-                    emptySpaces.emplace_back(
-                                        candidate.x + rectangle.w + padding,
+                                        candidate.x + rectangle.w,
                                         candidate.y,
-                                        candidate.w - rectangle.w - padding,
-                                        candidate.h);
-
-                    if (leftoverH > discardFactor) {
-                        emptySpaces.emplace_back(
-                                            candidate.x,
-                                            candidate.y + rectangle.h + padding,
-                                            rectangle.w + padding,
-                                            candidate.h - rectangle.h - padding);
-                    }
-                }
-                break;
-            }
-
-        }   // end while
-    }   // end for loop
-
-    return true;
-}
-
-inline bool pack2(std::vector<Rect> &rects, int binMaxW, int binMaxH, int padding = 0, int discardFactor = 0) {
-    std::vector<RectXYWH> emptySpaces;
-    emptySpaces.reserve(rects.size() + 1);
-    emptySpaces.emplace_back(0, 0, binMaxW, binMaxH);
-
-    for (Rect &rectangle: rects) {
-        std::vector<RectXYWH>::reverse_iterator it = emptySpaces.rbegin();
-
-        while (!emptySpaces.empty()) {
-            if (it == emptySpaces.rend()) {
-                return false;
-            }
-
-            RectXYWH candidate = *it;
-
-            // if rectangle is too big for empty space, skip to next empty space
-            if (candidate.w < rectangle.w + padding ||
-                candidate.h < rectangle.h + padding) {
-                it++;
-                continue;
-            }
-
-            // at this point, the rectangle fits in the empty space
-            rectangle.x = candidate.x;
-            rectangle.y = candidate.y;
-            std::iter_swap(it, emptySpaces.rbegin());
-            emptySpaces.pop_back();
-
-            int leftoverW = candidate.w - rectangle.w - padding;
-            int leftoverH = candidate.h - rectangle.h - padding;
-
-            if (leftoverW <= leftoverH) {
-                 // Check if space(s) is too small to be added
-                if (leftoverH >= discardFactor) {
-                    emptySpaces.emplace_back(
-                                        candidate.x,
-                                        candidate.y + rectangle.h + padding,
-                                        candidate.w,
-                                        candidate.h - rectangle.h - padding);
-
-                    if (leftoverW >= discardFactor) {
-                        emptySpaces.emplace_back(
-                                         candidate.x + rectangle.w + padding,
-                                         candidate.y,
-                                         candidate.w - rectangle.w - padding,
-                                         rectangle.h + padding);
+                                        leftoverW,
+                                        rectangle.h);
                     }
                 }
                 break;
@@ -244,27 +113,30 @@ inline bool pack2(std::vector<Rect> &rects, int binMaxW, int binMaxH, int paddin
             else {
                 if (leftoverW > discardFactor) {
                     emptySpaces.emplace_back(
-                                        candidate.x + rectangle.w + padding,
+                                        candidate.x + rectangle.w,
                                         candidate.y,
-                                        candidate.w - rectangle.w - padding,
+                                        leftoverW,
                                         candidate.h);
 
                     if (leftoverH > discardFactor) {
                         emptySpaces.emplace_back(
                                         candidate.x,
-                                        candidate.y + rectangle.h + padding,
-                                        rectangle.w + padding,
-                                        candidate.h - rectangle.h - padding);
+                                        candidate.y + rectangle.h,
+                                        rectangle.w,
+                                        leftoverH);
                     }
                 }
                 break;
             }
 
         }   // end while
+        rectangle.w -= padding;
+        rectangle.h -= padding;
     }   // end for loop
 
     return true;
 }
+
 /**
  * @brief Packs the given rectangles into a single bin as optimally as possible
  *
@@ -278,26 +150,41 @@ inline bool pack2(std::vector<Rect> &rects, int binMaxW, int binMaxH, int paddin
  * @param discardFactor The cutoff point for discarding empty spaces
  * @return              True if packing was successful, false otherwise
  */
-inline int binarySearchPack(std::vector<Rect> &rects, int binMaxW, int binMaxH, int padding = 0, int discardFactor = 0) {
-    int hi = std::max(binMaxW, binMaxH);
-    int lo = 0;
-    int mid = 0;
-
+inline int binarySearchPack(std::vector<Rect> &rects, int padding = 0,
+                                int maxDimension = 4096, int minStepSize = 4) {
+    // Prepare data
     std::sort(rects.begin(), rects.end(),
-              [](Rect a, Rect b) { return a.perimeter() > b.perimeter(); });
+              [](const Rect &a, const Rect &b) {
+                  return a.perimeter() > b.perimeter();
+              });
 
-    discardFactor = std::max(discardFactor, std::min(rects.back().w, rects.back().h));
+    int discardFactor = std::min(rects.back().w, rects.back().h);
 
-    while (lo < hi) {
-        mid = (lo + hi) / 2;
-        if (pack2(rects, mid, mid, padding, discardFactor)) {
-            hi = mid;
+    // Binary search for the best bin size
+    int currentDimension = maxDimension;
+    int returnDimension  = maxDimension;
+    int stepSize         = maxDimension / 2;
+
+    std::vector<RectXYWH> emptySpaces;
+    emptySpaces.reserve(rects.size() + 1);
+
+    while (stepSize > minStepSize) {
+        if (pack(rects, emptySpaces, currentDimension, currentDimension, padding, discardFactor)) {
+            returnDimension   = currentDimension;
+            currentDimension -= stepSize;
+        } else {
+            if (currentDimension == maxDimension) {
+                return -1;
+            }
+            currentDimension += stepSize;
         }
-        else {
-            lo = mid + 1;
-        }
+        stepSize /= 2;
     }
-    return mid;
+    // TODO: Optimize this. this line is needed because pack modifies rects and
+    // so rects is not guaranteed to be correct after last call to pack
+    pack(rects, emptySpaces, returnDimension, returnDimension, padding, discardFactor);
+
+    return returnDimension;
 }
 
 } // namespace RectPacker

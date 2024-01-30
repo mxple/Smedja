@@ -1,5 +1,4 @@
-#include <glad/glad.h>
-
+#include "Smedja/Renderer/RenderCommand.h"
 #include "Smedja/Events/CharTypedEvent.h"
 #include "Smedja/Core/Input.h"
 #include "Smedja/Core/Window.h" // must be included after glad
@@ -74,7 +73,7 @@ void Window::init(const WindowProps &props) {
     // Maybe use platform agnostic abstract function
     glfwSetFramebufferSizeCallback(
         m_window, [](GLFWwindow *window, int width, int height) {
-            glViewport(0, 0, width, height);
+            RenderCommand::setViewport(0, 0, width, height);
         });
 
     glfwSetWindowSizeCallback(

@@ -1,7 +1,5 @@
 #pragma once
 
-// #include <GLFW/glfw3.h>
-
 #include "Smedja/Events/Event.h"
 #include "Smedja/Core/Input.h"
 #include "Smedja/Renderer/GLContext.h"

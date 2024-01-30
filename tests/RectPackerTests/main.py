@@ -3,15 +3,14 @@ import os
 import random
 
 def generate_random_color_image(width, height, border_size = 3):
-    # Create a new image with a transparent background
-    image = Image.new("RGBA", (width, height), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(image)
+    color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 255)
 
-    # Define the border color
-    border_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 255)
+    image = Image.new("RGBA", (width, height), color)
 
-    # Draw the border
-    draw.rectangle([0, 0, width - 1, height - 1], outline=border_color, width=border_size)
+
+    # image = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    # draw = ImageDraw.Draw(image)
+    # draw.rectangle([0, 0, width - 1, height - 1], outline=border_color, width=border_size)
 
     return image
 
@@ -36,7 +35,7 @@ def generate_and_save_images(num_images, folder):
         save_image(random_image, folder, filename)
 
 if __name__ == "__main__":
-    num_images_to_generate = 15  # Change this to the desired number of images
+    num_images_to_generate = 20  # Change this to the desired number of images
     output_folder = "output_images"
 
     generate_and_save_images(num_images_to_generate, output_folder)

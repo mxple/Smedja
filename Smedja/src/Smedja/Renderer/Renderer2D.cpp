@@ -79,9 +79,22 @@ void Renderer2D::flush() {
     glDrawElements(GL_TRIANGLES, s_quads.size() * 6, GL_UNSIGNED_INT, nullptr);
 }
 
+void Renderer2D::drawSprite(Sprite &sprite, const glm::vec3 &position,
+                            const glm::vec2 &size, const float rotation,
+                            const glm::vec4 &color) {
+    // bind textur
+    if (s_currBoundTexture != sprite.textureAtlas()->id()) {
+        endScene();
+        beginScene();   
+        sprite.textureAtlas()->bind();
+        s_currBoundTexture = sprite.textureAtlas()->id();
+    }
+
+    drawQuadExt(position, size, rotation, color, sprite.texCoord1(), sprite.texCoord2());
+}
+
 void Renderer2D::drawQuadExt(const glm::vec3 &position, const glm::vec2 &size,
                              const float rotation, const glm::vec4 &color,
-                             const std::shared_ptr<GLTexture> &texture,
                              const glm::vec2 &texCoord1,
                              const glm::vec2 &texCoord2) {
     if (s_quads.size() >= Renderer2D::maxQuads) {
@@ -90,13 +103,8 @@ void Renderer2D::drawQuadExt(const glm::vec3 &position, const glm::vec2 &size,
     }
     // TODO: implement texture atlas, translate texcoords to atlas coords
 
-    s_quads.emplace_back(
-        glm::vec4{position, rotation},
-        glm::vec4{size, 0, 0},
-        color,
-        texCoord1,
-        texCoord2
-    );
+    s_quads.emplace_back(glm::vec4{position, rotation}, glm::vec4{size, 0, 0},
+                         color, texCoord1, texCoord2);
 }
 
 } // namespace Smedja

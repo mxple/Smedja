@@ -13,7 +13,5 @@
 
 #include <chrono>
 
-#ifndef SD_DISABLE_DEPENDENCIES
 #include "Smedja/Core/Log.h"
 #include "Smedja/Core/Core.h"
-#endif

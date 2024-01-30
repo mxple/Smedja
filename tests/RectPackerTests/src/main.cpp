@@ -22,8 +22,7 @@ std::vector<std::string> readDirectory(const std::string &directoryPath) {
     return files;
 }
 
-void generateAtlas(const std::string &directoryPath, int width = 4096,
-                   int height = 4096) {
+void generateAtlas(const std::string &directoryPath, int padding = 4096) {
     // Read in all images in the directory
     std::vector files = readDirectory(directoryPath);
 
@@ -42,9 +41,10 @@ void generateAtlas(const std::string &directoryPath, int width = 4096,
         rects.back().textureIndex = textureIndex++;
     }
 
+    std::cerr << "padding: " << padding << std::endl;
     auto t1 = std::chrono::high_resolution_clock::now();
 
-    int dims = RectPacker::binarySearchPack(rects, width, height, 0, 0);
+    int dims = RectPacker::binarySearchPack(rects, padding);
 
     auto t2 = std::chrono::high_resolution_clock::now();
     auto duration =
@@ -57,11 +57,10 @@ void generateAtlas(const std::string &directoryPath, int width = 4096,
     } else {
         std::cerr << "Packed successfully" << std::endl;
     }
-    dims++;
 
     Smedja::Texture atlas;
-    unsigned char *data = new unsigned char[dims * dims * 4];
-    memset(data, 0xFF, dims * dims * 4);
+    unsigned char *data =
+        (unsigned char *)calloc(dims * dims * 4, sizeof(unsigned char));
     atlas.loadFromData(data, dims, dims, 4);
 
     // Write out to the atlas file
@@ -73,18 +72,16 @@ void generateAtlas(const std::string &directoryPath, int width = 4096,
                    0);
     std::cerr << "Atlas size: " << atlas.width() << "x" << atlas.height()
               << std::endl;
-}
+} // segfault here
 
 int main(int argc, char **argv) {
-    if (argc != 4) {
+    if (argc != 3) {
         std::cerr << "Usage: " << argv[0] << " <directory_path> "
-                  << "<width> "
-                  << "<height>" << std::endl;
+                  << "<padding>" << std::endl;
         return 1;
     }
 
-    std::string directoryPath = argv[1];
-    generateAtlas(directoryPath, std::stoi(argv[2]), std::stoi(argv[3]));
+    generateAtlas(argv[1], std::stoi(argv[2]));
 
     return 0;
 }

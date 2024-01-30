@@ -22,6 +22,8 @@ public:
 
     void setParam(GLenum name, GLenum value);
 
+    unsigned int id() const;
+
 private:
     unsigned int m_ID;
 };

@@ -1,15 +1,11 @@
 #include "GLTexture.h"
-#ifdef DEBUG
-#define STBI_NO_SIMD
-#endif
-#define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
 namespace Smedja {
 
 GLTexture::GLTexture() {
     glGenTextures(1, &m_ID);
-    glBindTexture(GL_TEXTURE_2D, m_ID);
+    // glBindTexture(GL_TEXTURE_2D, m_ID);
 
     // set params here if wanted
 }
@@ -43,7 +39,7 @@ GLTexture::~GLTexture() {
 }
 
 void GLTexture::setData(const std::string &path, GLenum textureFormat) {
-    stbi_set_flip_vertically_on_load(true);
+    // stbi_set_flip_vertically_on_load(true);
     int width, height, nrChannels;
     unsigned char *data =
         stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
@@ -81,6 +77,10 @@ void GLTexture::setParam(GLenum name, GLenum value) {
     // pretty sure this is necessary, maybe do testing later
     glBindTexture(GL_TEXTURE_2D, m_ID);
     glTexParameteri(GL_TEXTURE_2D, name, value);
+}
+
+unsigned int GLTexture::id() const {
+    return m_ID;
 }
 
 } // namespace Smedja

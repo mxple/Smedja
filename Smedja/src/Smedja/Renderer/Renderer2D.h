@@ -1,8 +1,8 @@
 #pragma once
-#include "Smedja/Renderer/Renderer.h"
 #include "Smedja/Renderer/Shader.h"
-#include "Smedja/Renderer/GLTexture.h"
+// #include "Smedja/Renderer/GLTexture.h"
 #include "Smedja/Renderer/VertexArray.h"
+#include "Smedja/Graphics/Sprite.h"
 
 namespace Smedja {
 
@@ -15,11 +15,16 @@ public:
 
     static void flush();
 
+    static void drawSprite(Sprite &sprite,
+                           const glm::vec3 &position = {0.0f, 0.0f, 0.0f},
+                           const glm::vec2 &size = {1.0f, 1.0f},
+                           const float rotation = 0.0f,
+                           const glm::vec4 &color = {1.0f, 1.0f, 1.0f, 1.0f});
+
     // primitives
     static void drawQuadExt(const glm::vec3 &position, const glm::vec2 &size,
                             const float rotation = 0.0f,
                             const glm::vec4 &color = {1.0f, 1.0f, 1.0f, 1.0f},
-                            const std::shared_ptr<GLTexture> &texture = nullptr,
                             const glm::vec2 &texCoord1 = {0.0f, 0.0f},
                             const glm::vec2 &texCoord2 = {1.0f, 1.0f});
 
@@ -51,6 +56,8 @@ private:
     inline static std::shared_ptr<Shader> s_textureShader = nullptr;
 
     inline static bool s_initialized = false;
+
+    inline static int s_currBoundTexture = -1;
 };
 
 } // namespace Smedja
